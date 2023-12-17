@@ -65,6 +65,9 @@ app.use(express.static(path.join(__dirname,"public")));
 app.use(cookieParser('ShopCart'));
 app.use(cors(corsOptions));
 app.use((req: Request, res: Response, next: NextFunction) => {
+  res.header('Access-Control-Allow-Origin', 'https://shop-cart-vercel.vercel.app');
+  res.header('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.header('Access-Control-Allow-Headers', '*');
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
