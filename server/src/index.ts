@@ -30,39 +30,30 @@ const sessionConfig = {
 };
 
 const listDomain =  [
-  'https://shop-cart-vercel.vercel.app/api/', 
-  'https://shop-cart-vercel.vercel.app/api/getAllType', 
-  'https://shop-cart-vercel.vercel.app/api/search-item', 
-  'https://shop-cart-vercel.vercel.app/api/add/:id', 
-  'https://shop-cart-vercel.vercel.app/api/delete/:id', 
-  'https://shop-cart-vercel.vercel.app/api/user/login', 
-  'https://shop-cart-vercel.vercel.app/api/user/register', 
-  'https://shop-cart-vercel.vercel.app/api/user/user-cart/:id', 
-  'https://shop-cart-vercel.vercel.app/api/user/check-out', 
-  'https://shop-cart-vercel.vercel.app/api/product/:id/page/:page',
-  'https://shop-cart-vercel.vercel.app/api/product/:id', 
-  'https://shop-cart-vercel.vercel.app/api/admin/list-product/:page', 
-  'https://shop-cart-vercel.vercel.app/api/admin/list-user/:page', 
-  'https://shop-cart-vercel.vercel.app/api/admin/add-product', 
-  'https://shop-cart-vercel.vercel.app/api/admin/detail-product/:id', 
-  'https://shop-cart-vercel.vercel.app/api/admin/delete-product/:id',
-  'https://shop-cart-vercel.vercel.app/api/admin/edit-product/:id',
-  'https://shop-cart-vercel.vercel.app/api/store/page/:page',
-  'https://shop-cart-vercel.vercel.app/api/search/page/:page',
+  'https://shop-cart-vercel-api.vercel.app/api/', 
+  'https://shop-cart-vercel-api.vercel.app/api/getAllType', 
+  'https://shop-cart-vercel-api.vercel.app/api/search-item', 
+  'https://shop-cart-vercel-api.vercel.app/api/add/:id', 
+  'https://shop-cart-vercel-api.vercel.app/api/delete/:id', 
+  'https://shop-cart-vercel-api.vercel.app/api/user/login', 
+  'https://shop-cart-vercel-api.vercel.app/api/user/register', 
+  'https://shop-cart-vercel-api.vercel.app/api/user/user-cart/:id', 
+  'https://shop-cart-vercel-api.vercel.app/api/user/check-out', 
+  'https://shop-cart-vercel-api.vercel.app/api/product/:id/page/:page',
+  'https://shop-cart-vercel-api.vercel.app/api/product/:id', 
+  'https://shop-cart-vercel-api.vercel.app/api/admin/list-product/:page', 
+  'https://shop-cart-vercel-api.vercel.app/api/admin/list-user/:page', 
+  'https://shop-cart-vercel-api.vercel.app/api/admin/add-product', 
+  'https://shop-cart-vercel-api.vercel.app/api/admin/detail-product/:id', 
+  'https://shop-cart-vercel-api.vercel.app/api/admin/delete-product/:id',
+  'https://shop-cart-vercel-api.vercel.app/api/admin/edit-product/:id',
+  'https://shop-cart-vercel-api.vercel.app/api/store/page/:page',
+  'https://shop-cart-vercel-api.vercel.app/api/search/page/:page',
 ]
 
 const corsOptions = {
   origin:listDomain,
   credentials: true,
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-  optionsSuccessStatus: 204,
-  allowedHeaders: [
-    'Access-Control-Allow-Origin',
-    'Access-Control-Allow-Methods',
-    'Access-Control-Allow-Headers',
-    'Authorization',
-    'Content-Type',
-  ],
 };
 
 
