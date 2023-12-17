@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express'
 import createError from 'http-errors';
 import { engine } from 'express-handlebars';
 import flash from 'express-flash';
@@ -72,6 +72,10 @@ const storeRouter = require('./routes/store');
 const facebookRouter = require('./middleware/auth/facebook-auth');
 const searchRouter = require('./routes/search');
 
+
+app.get('/', (req: Request, res: Response) => {
+	return res.send('Welcome to my API')
+})
 app.use('/api/', indexRouter);
 app.use('/api/user', userRouter);
 app.use('/api/product', productRouter);
