@@ -30,6 +30,7 @@ const sessionConfig = {
 };
 
 const listDomain =  [
+  'https://shop-cart-vercel-api.vercel.app/api',
   'https://shop-cart-vercel-api.vercel.app/api/', 
   'https://shop-cart-vercel-api.vercel.app/api/getAllType', 
   'https://shop-cart-vercel-api.vercel.app/api/search-item', 
