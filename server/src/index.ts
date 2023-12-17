@@ -29,6 +29,11 @@ const sessionConfig = {
   },
 };
 
+const corsOptions = {
+  origin: 'https://shop-cart-vercel.vercel.app/', // Thay thế bằng địa chỉ ứng dụng frontend của bạn
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+};
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
