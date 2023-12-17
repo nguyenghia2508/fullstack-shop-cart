@@ -7,9 +7,12 @@
     "node": "18.x"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon"
-  },
+    "start": "nodemon src/index.ts",
+    "build": "rimraf dist && tsc",
+    "ts.check": "tsc --project tsconfig.json",
+    "add-build": "git add dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+    },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -51,5 +54,10 @@
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
-  }
+  },
+  "pre-commit": [
+      "ts.check",
+      "build",
+      "add-build"
+  ]
 }
