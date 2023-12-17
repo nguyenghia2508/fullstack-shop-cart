@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express'
+import express, { Request, Response,NextFunction } from 'express'
 import createError from 'http-errors';
 import { engine } from 'express-handlebars';
 import flash from 'express-flash';
@@ -64,11 +64,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname,"public")));
 app.use(cookieParser('ShopCart'));
 app.use(cors(corsOptions));
-app.use((req: Request, res: Response, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
   }
+  next();
 });
 app.use(function (request, response, next) {
   if (request.session && !request.session.regenerate) {
