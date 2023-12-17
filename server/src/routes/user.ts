@@ -113,7 +113,7 @@ router.post('/register', registerValidator, (req: Request, res: Response, next: 
 });
 
 router.post('/verify-token',verifyUser.verifyToken,
-  (req, res) => {
+  (req: Request, res: Response) => {
     res.status(200).json({ user: req.user })
   }
 )

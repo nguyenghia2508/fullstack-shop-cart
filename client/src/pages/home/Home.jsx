@@ -260,7 +260,7 @@ const Home = () => {
                           </div>
                           <div className="product-calculate">
                             <span className="totalSold">{item.totalSold ? item.totalSold : 0 } sold</span>
-                            <span className="review-counting">{item.count ? item.count : 0} Reviews</span>
+                            <span className="review-counting">{item.count > 0 ? item.count : 0} reviews</span>
                             </div>
                         </div>
                         <div className="add-to-cart">
@@ -305,7 +305,7 @@ const Home = () => {
                           </div>
                           <div className="product-calculate">
                             <span className="totalSold">{item.totalSold ? item.totalSold : 0 }</span>
-                            <span className="review-counting">{item.count ? item.count : 0} Reviews</span>
+                            <span className="review-counting">{item.count > 0 ? item.count : 0} reviews</span>
                             </div>
                         </div>
                         <div className="add-to-cart">
@@ -350,7 +350,7 @@ const Home = () => {
                         </div>
                         <div className="product-calculate">
                           <span className="totalSold">{item.totalSold ? item.totalSold : 0 }</span>
-                          <span className="review-counting">{item.count ? item.count : 0} Reviews</span>
+                          <span className="review-counting">{item.count > 0 ? item.count : 0} reviews</span>
                         </div>
                       </div>
                       <div className="add-to-cart">
