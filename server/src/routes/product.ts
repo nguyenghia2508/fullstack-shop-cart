@@ -313,20 +313,18 @@ router.post('/:id', async (req: Request, res: Response, next: NextFunction) => {
         return;
         }
 
-        const rating = await Rating.findOneAndUpdate(
-            { productName: { $regex: `^${id}$`, $options: 'i' } },
-            {
-              $push: {
-                listReview: {
-                  $each: [{ userReview: await nameUser(username), reviewPost: body.reviewText, rating: body.rating, date: formatDate() }],
-                  $position: 0, 
-                },
-              },
-            },
-            { new: true } // Return the updated document
-        )
+        const listReview = {
+            userReview: await nameUser(username),
+            reviewPost: body.reviewText,
+            rating: body.rating,
+            date: formatDate()
+          };
 
-        if(rating)
+        const updateResult = await Rating.updateOne({ productName: { $regex: `^${id}$`, $options: 'i' } },
+            { $push: { listReview } }
+        );
+
+        if(updateResult)
         {
             const rt = await Rating.findOne({ productName: { $regex: `^${id}$`, $options: 'i' } }, { listReview: 1 });
             if(rt)
