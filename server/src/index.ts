@@ -29,12 +29,23 @@ const sessionConfig = {
   },
 };
 
+const corsOptions = {
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+};
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname,"public")));
 app.use(cookieParser('ShopCart'));
-app.use(cors());
+app.use(cors(corsOptions));
+app.use((req: Request, res: Response, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,OPTIONS,PATCH,DELETE,POST,PUT");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 app.use(function (request, response, next) {
   if (request.session && !request.session.regenerate) {
     request.session.regenerate = (cb: any) => {
@@ -76,13 +87,14 @@ const searchRouter = require('./routes/search');
 app.get('/', (req: Request, res: Response) => {
 	return res.send('Welcome to my API')
 })
-app.use('/api/', indexRouter);
-app.use('/api/user', userRouter);
-app.use('/api/product', productRouter);
-app.use('/api/admin', adminRouter);
-app.use('/api/store', storeRouter);
-app.use('/api/auth/facebook', facebookRouter);
-app.use('/api/search', searchRouter);
+
+app.use('/api/',cors(corsOptions),indexRouter);
+app.use('/api/user',cors(corsOptions),userRouter);
+app.use('/api/product',cors(corsOptions),productRouter);
+app.use('/api/admin',cors(corsOptions),adminRouter);
+app.use('/api/store',cors(corsOptions),storeRouter);
+app.use('/api/auth/facebook',cors(corsOptions),facebookRouter);
+app.use('/api/search',cors(corsOptions),searchRouter);
 
 app.listen(5000, () => {
   console.log(`Listening at http://localhost:5000`);
