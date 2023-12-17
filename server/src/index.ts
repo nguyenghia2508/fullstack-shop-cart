@@ -37,6 +37,7 @@ const listDomain =  [
   'https://shop-cart-vercel-api.vercel.app/api/delete/:id', 
   'https://shop-cart-vercel-api.vercel.app/api/user/login', 
   'https://shop-cart-vercel-api.vercel.app/api/user/register', 
+  'https://shop-cart-vercel-api.vercel.app/api/user/verify-token',
   'https://shop-cart-vercel-api.vercel.app/api/user/user-cart/:id', 
   'https://shop-cart-vercel-api.vercel.app/api/user/check-out', 
   'https://shop-cart-vercel-api.vercel.app/api/product/:id/page/:page',
