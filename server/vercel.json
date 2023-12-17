@@ -7,11 +7,11 @@
       }
     ],
     "rewrites": [
-      { "source": "/api/(.*)", "destination": "src/index.ts" }
+      { "source": "/(.*)", "destination": "src/index.ts" }
     ],
     "headers": [
       {
-        "source": "/(.*)",
+        "source": "/api/(.*)",
         "headers": [
           { "key": "Access-Control-Allow-Credentials", "value": "true" },
           { "key": "Access-Control-Allow-Origin", "value": "*" },
