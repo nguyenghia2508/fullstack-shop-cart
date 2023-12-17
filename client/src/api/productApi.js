@@ -3,7 +3,7 @@ import axiosClient from './axiosClient'
 const productApi = {
   getFirstProduct: () => axiosClient.get('api/'),
   // updatePositoin: (params) => axiosClient.put('boards', params),
-  getProduct: (id,user,page) => axiosClient.get(`api/product/${id}/page/${page && page}?user=${user}`),
+  getProduct: (id,user,page) => axiosClient.get(`api/product/${id}/page/${page ? page : 1}?user=${user}`),
 
   submitReview: (id,user,reviewText,rating) => axiosClient.post(`api/product/${id}?user=${user}`,{reviewText,rating}),
 

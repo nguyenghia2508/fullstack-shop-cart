@@ -8,9 +8,8 @@
   ],
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "/api/(.*)",
       "dest": "src/index.ts",
-      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
       "headers": {
         "Access-Control-Allow-Origin": "https://shop-cart-vercel.vercel.app",
         "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,PATCH,OPTIONS",

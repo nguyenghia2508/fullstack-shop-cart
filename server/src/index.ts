@@ -64,6 +64,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname,"public")));
 app.use(cookieParser('ShopCart'));
 app.use(cors(corsOptions));
+app.use((req: Request, res: Response, next) => {
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200).end();
+    return;
+  }
+});
 app.use(function (request, response, next) {
   if (request.session && !request.session.regenerate) {
     request.session.regenerate = (cb: any) => {
