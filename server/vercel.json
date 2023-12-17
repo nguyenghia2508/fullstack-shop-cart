@@ -9,12 +9,6 @@
   "rewrites": [
     { "source": "/(.*)", "destination": "src/index.ts" }
   ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "src/index.ts"
-    }
-  ],
   "headers": [
     {
       "source": "/api/(.*)",
