@@ -324,7 +324,7 @@ router.post('/:id', async (req: Request, res: Response, next: NextFunction) => {
               },
             },
             { new: true } // Return the updated document
-          ).select('listReview');
+        );
 
           
         const rt = await Rating.findOne({ productName: { $regex: `^${id}$`, $options: 'i' } }, { listReview: 1 });
