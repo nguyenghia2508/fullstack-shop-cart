@@ -275,12 +275,13 @@ router.post('/check-out', billingValidator,verifyUser.verifyToken, async (req: R
                     const product = await Product.findOne({ name: p.productName });
   
                     if (product) {
+                      const totalSold = isNaN(product.totalSold) ? 0 : product.totalSold;
                       await Product.updateOne(
                         { name: product.name },
                         {
                           $set: {
                             number: (product.number - p.productNumber),
-                            totalSold: parseInt(product.totalSold + p.productNumber),
+                            totalSold: parseInt(totalSold + p.productNumber),
                           },
                         }
                       );
@@ -325,12 +326,13 @@ router.post('/check-out', billingValidator,verifyUser.verifyToken, async (req: R
                     const product = await Product.findOne({ name: p.productName });
   
                     if (product) {
+                      const totalSold = isNaN(product.totalSold) ? 0 : product.totalSold;
                       await Product.updateOne(
                         { name: product.name },
                         {
                           $set: {
                             number: (product.number - p.productNumber),
-                            totalSold: parseInt(product.totalSold + p.productNumber),
+                            totalSold: parseInt(totalSold + p.productNumber),
                           },
                         }
                       );
@@ -383,12 +385,13 @@ router.post('/check-out', billingValidator,verifyUser.verifyToken, async (req: R
                     const product = await Product.findOne({ name: p.productName });
   
                     if (product) {
+                      const totalSold = isNaN(product.totalSold) ? 0 : product.totalSold;
                       await Product.updateOne(
                         { name: product.name },
                         {
                           $set: {
                             number: (product.number - p.productNumber),
-                            totalSold: parseInt(product.totalSold + p.productNumber),
+                            totalSold: parseInt(totalSold + p.productNumber),
                           },
                         }
                       );
@@ -430,12 +433,13 @@ router.post('/check-out', billingValidator,verifyUser.verifyToken, async (req: R
                     const product = await Product.findOne({ name: p.productName });
   
                     if (product) {
+                      const totalSold = isNaN(product.totalSold) ? 0 : product.totalSold;
                       await Product.updateOne(
                         { name: product.name },
                         {
                           $set: {
                             number: (product.number - p.productNumber),
-                            totalSold: parseInt(product.totalSold + p.productNumber),
+                            totalSold: parseInt(totalSold + p.productNumber),
                           },
                         }
                       );
