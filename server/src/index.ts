@@ -66,7 +66,7 @@ app.use(cookieParser('ShopCart'));
 app.use(cors(corsOptions));
 app.use((req: Request, res: Response, next) => {
   if (req.method === 'OPTIONS') {
-    res.sendStatus(200).end();
+    res.status(200).end();
     return;
   }
 });
