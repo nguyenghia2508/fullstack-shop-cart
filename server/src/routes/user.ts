@@ -291,15 +291,17 @@ router.post('/check-out', billingValidator,verifyUser.verifyToken, async (req: R
                     if (error) {
                       console.log(error);
                     }
+                    else
+                    {
+                      const message = 'We will send invoice information via email. Please check your mailbox';
+                      return res.status(200).json({
+                        param: 'userCart',
+                        state: 'success',
+                        msg: message
+                      })
+                    }
                   });
   
-                  const message = 'We will send invoice information via email. Please check your mailbox';
-  
-                  return res.status(200).json({
-                    param: 'userCart',
-                    state: 'success',
-                    msg: message
-                  })
                 } else {
                   const bill = new Bill({
                     username: user,
@@ -339,15 +341,16 @@ router.post('/check-out', billingValidator,verifyUser.verifyToken, async (req: R
                     if (error) {
                       console.log(error);
                     }
+                    else
+                    {
+                      const message = 'We will send invoice information via email. Please check your mailbox';
+                      return res.status(200).json({
+                        param: 'userCart',
+                        state: 'success',
+                        msg: message
+                      })
+                    }
                   });
-  
-                  const message = 'We will send invoice information via email. Please check your mailbox';
-  
-                  return res.status(200).json({
-                    param: 'userCart',
-                    state: 'success',
-                    msg: message
-                  })
                 }
               } else {
                 const mailOptions = {
@@ -396,15 +399,14 @@ router.post('/check-out', billingValidator,verifyUser.verifyToken, async (req: R
                     if (error) {
                       console.log(error);
                     }
+                    const message = 'We will send invoice information via email. Please check your mailbox';
+                    return res.status(200).json({
+                      param: 'userCart',
+                      state: 'success',
+                      msg: message
+                    })
                   });
-  
-                  const message = 'We will send invoice information via email. Please check your mailbox';
-  
-                  return res.status(200).json({
-                    param: 'userCart',
-                    state: 'success',
-                    msg: message
-                  })
+
                 } else {
                   const bill = new Bill({
                     username: user,
@@ -444,15 +446,13 @@ router.post('/check-out', billingValidator,verifyUser.verifyToken, async (req: R
                     if (error) {
                       console.log(error);
                     }
+                    const message = 'We will send invoice information via email. Please check your mailbox';
+                    return res.status(200).json({
+                      param: 'userCart',
+                      state: 'success',
+                      msg: message
+                    })
                   });
-  
-                  const message = 'We will send invoice information via email. Please check your mailbox';
-  
-                  return res.status(200).json({
-                    param: 'userCart',
-                    state: 'success',
-                    msg: message
-                  })
                 }
               }
             }
