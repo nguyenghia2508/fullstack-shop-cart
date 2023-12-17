@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express'
+import express, { Request, Response, NextFunction} from 'express'
 import createError from 'http-errors';
 import { engine } from 'express-handlebars';
 import flash from 'express-flash';
@@ -29,12 +29,39 @@ const sessionConfig = {
   },
 };
 
+const allowCors = (fn: (req: Request, res: Response, next: NextFunction) => Promise<void>) => async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS, PATCH, DELETE, POST, PUT');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  );
+
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
+  await fn(req, res, next);
+};
+
+const handler = async (req: Request, res: Response, next: NextFunction) => {
+  const d = new Date();
+  res.end(d.toString());
+};
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname,"public")));
 app.use(cookieParser('ShopCart'));
-app.use(cors());
+// app.use(cors());
+app.use(allowCors(handler));
+
 app.use(function (request, response, next) {
   if (request.session && !request.session.regenerate) {
     request.session.regenerate = (cb: any) => {
@@ -76,6 +103,7 @@ const searchRouter = require('./routes/search');
 app.get('/', (req: Request, res: Response) => {
 	return res.send('Welcome to my API')
 })
+
 app.use('/api/', indexRouter);
 app.use('/api/user', userRouter);
 app.use('/api/product', productRouter);

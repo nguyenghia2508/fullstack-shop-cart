@@ -15,8 +15,7 @@ axiosClient.interceptors.request.use(async config => {
       ...config,
       headers: {
         'Content-Type': 'multipart/form-data',
-        'authorization': `Bearer ${getToken()}`,
-        'Access-Control-Allow-Origin': '*',
+        'authorization': `Bearer ${getToken()}`
       }
     }
   }
@@ -26,8 +25,7 @@ axiosClient.interceptors.request.use(async config => {
       ...config,
       headers: {
         'Content-Type': 'application/json',
-        'authorization': `Bearer ${getToken()}`,
-        'Access-Control-Allow-Origin': '*',
+        'authorization': `Bearer ${getToken()}`
       }
     }
   }
