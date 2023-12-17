@@ -8,7 +8,7 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
+      "src": "/(.*)",
       "dest": "src/index.ts",
       "headers": {
         "Access-Control-Allow-Origin": "https://shop-cart-vercel.vercel.app",
