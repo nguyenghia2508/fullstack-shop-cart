@@ -54,7 +54,7 @@ const listDomain =  [
 const corsOptions = {
   origin:listDomain,
   credentials: true,
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   optionsSuccessStatus: 204,
   allowedHeaders: [
     'Access-Control-Allow-Origin',
