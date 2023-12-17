@@ -313,7 +313,7 @@ router.post('/:id', async (req: Request, res: Response, next: NextFunction) => {
         return;
         }
 
-        await Rating.findOneAndUpdate(
+        const rating = await Rating.findOneAndUpdate(
             { productName: { $regex: `^${id}$`, $options: 'i' } },
             {
               $push: {
@@ -324,85 +324,92 @@ router.post('/:id', async (req: Request, res: Response, next: NextFunction) => {
               },
             },
             { new: true } // Return the updated document
-        );
+        )
 
-          
-        const rt = await Rating.findOne({ productName: { $regex: `^${id}$`, $options: 'i' } }, { listReview: 1 });
-    
-        if(rt)
+        if(rating)
         {
-            const count = rt.listReview?.length;
-            const totalPages: (number | string)[] = [];
-            const pageTotal = Math.ceil(count / perPage);
-            const currentpage = page;
-    
-            if (pageTotal <= 6) {
-                for (let i = 1; i <= pageTotal; i++) {
-                    totalPages.push(i);
-                }
-            } else {
-                totalPages.push(1);
-    
-                if (currentpage > 3) {
-                    totalPages.push('...');
-                }
-    
-                if (currentpage === pageTotal) {
-                    totalPages.push(currentpage - 2);
-                }
-    
-                if (currentpage > 2) {
-                    totalPages.push(currentpage - 1);
-                }
-    
-                if (currentpage !== 1 && currentpage !== pageTotal) {
-                    totalPages.push(currentpage);
-                }
-    
-                if (currentpage < pageTotal - 1) {
-                    totalPages.push(currentpage + 1);
-                }
-    
-                if (currentpage === 1) {
-                    totalPages.push(currentpage + 2);
-                }
-    
-                if (currentpage < pageTotal - 2) {
-                    totalPages.push('...');
-                }
-                totalPages.push(pageTotal);
-            }
-    
-            const listReview: any[] = rt.listReview.map((lt: any) => ({
-                userReview: lt.userReview,
-                reviewPost: lt.reviewPost,
-                rating: lt.rating,
-                date: lt.date
-            }));
+            const rt = await Rating.findOne({ productName: { $regex: `^${id}$`, $options: 'i' } }, { listReview: 1 });
+            if(rt)
+            {
+                const count = rt.listReview?.length;
+                const totalPages: (number | string)[] = [];
+                const pageTotal = Math.ceil(count / perPage);
+                const currentpage = page;
         
-            const listReviewSlice = paginateArray(listReview, currentpage, perPage);
-            const totalRating = calculateRatingCounts(listReview).reverse();
-            const convertedTotalRating: { rating: string; count: number }[] = totalRating.map(item => ({
-                rating: item.rating.toString(),
-                count: item.count,
-            }));
-            const averageRating: string = (calculateAverageRating(convertedTotalRating).toFixed(1));
-            const [integerPart, decimalPart] = separateDecimal(parseFloat(averageRating));
-            res.status(200).send({ code: '10', message: 'Comment Success', 
-                listReviewSlice,
-                count, 
-                totalPages,
-                totalRating,
-                averageRating,
-                integerPart,
-                decimalPart,
-                state:'success'
-            });    
+                if (pageTotal <= 6) {
+                    for (let i = 1; i <= pageTotal; i++) {
+                        totalPages.push(i);
+                    }
+                } else {
+                    totalPages.push(1);
+        
+                    if (currentpage > 3) {
+                        totalPages.push('...');
+                    }
+        
+                    if (currentpage === pageTotal) {
+                        totalPages.push(currentpage - 2);
+                    }
+        
+                    if (currentpage > 2) {
+                        totalPages.push(currentpage - 1);
+                    }
+        
+                    if (currentpage !== 1 && currentpage !== pageTotal) {
+                        totalPages.push(currentpage);
+                    }
+        
+                    if (currentpage < pageTotal - 1) {
+                        totalPages.push(currentpage + 1);
+                    }
+        
+                    if (currentpage === 1) {
+                        totalPages.push(currentpage + 2);
+                    }
+        
+                    if (currentpage < pageTotal - 2) {
+                        totalPages.push('...');
+                    }
+                    totalPages.push(pageTotal);
+                }
+        
+                const listReview: any[] = rt.listReview.map((lt: any) => ({
+                    userReview: lt.userReview,
+                    reviewPost: lt.reviewPost,
+                    rating: lt.rating,
+                    date: lt.date
+                }));
+            
+                const listReviewSlice = paginateArray(listReview, currentpage, perPage);
+                const totalRating = calculateRatingCounts(listReview).reverse();
+                const convertedTotalRating: { rating: string; count: number }[] = totalRating.map(item => ({
+                    rating: item.rating.toString(),
+                    count: item.count,
+                }));
+                const averageRating: string = (calculateAverageRating(convertedTotalRating).toFixed(1));
+                const [integerPart, decimalPart] = separateDecimal(parseFloat(averageRating));
+                res.status(200).send({ code: '10', message: 'Comment Success', 
+                    listReviewSlice,
+                    count, 
+                    totalPages,
+                    totalRating,
+                    averageRating,
+                    integerPart,
+                    decimalPart,
+                    state:'success'
+                });    
+            }
+            else {
+                res.status(404).send({ code: '404', message: 'Rating not found' ,state:'false'});
+                return;
+            }
         }
-        else {
-            res.status(404).send({ code: '404', message: 'Rating not found' ,state:'false'});
+        else
+        {
+            res.status(404).send({ code: '404', message: 'Something wrong' ,state:'false'});
             return;
         }
+    
     } catch (err) {
       console.log(err);
       res.status(500).send({ code: '500', message: 'Internal Server Error',state:'false'});
