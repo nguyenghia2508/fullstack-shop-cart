@@ -29,18 +29,12 @@ const sessionConfig = {
   },
 };
 
-const corsOptions = {
-  origin: '*', // Thay thế bằng địa chỉ ứng dụng frontend của bạn
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-};
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname,"public")));
 app.use(cookieParser('ShopCart'));
-app.use(cors(corsOptions));
-
+app.use(cors());
 app.use(function (request, response, next) {
   if (request.session && !request.session.regenerate) {
     request.session.regenerate = (cb: any) => {
