@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+
+
+
+.wrapper{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.wrapper .alert_wrap{
+  width: 350px;
+  background: #fff;
+  position: relative;
+  box-shadow: 0 0 2px rgba(0,0,0,0.05);
+}
+
+.wrapper .alert_wrap .alert_icon{
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 2px rgba(0,0,0,0.05);
+}
+
+.wrapper .alert_wrap .alert_icon .icon{
+  display: block;
+  font-size: 40px;
+  padding: 5px;
+  border-radius: 50%;
+}
+
+.wrapper .alert_wrap.success .alert_icon{
+  color: #69d1a0;
+}
+
+.wrapper .alert_wrap.success .alert_icon .icon{
+  border: 2px solid #69d1a0;
+}
+
+.wrapper .alert_wrap.error .alert_icon{
+  color: #e54053;
+}
+
+.wrapper .alert_wrap.error .alert_icon .icon{
+  border: 2px solid #e54053;
+}
+
+.wrapper .alert_wrap .content{
+  padding: 60px 30px 30px;
+  text-align: center;
+}
+
+.wrapper .alert_wrap .content .title{
+  font-weight: 700;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.wrapper .alert_wrap .content .info{
+  color: #b5b5b5;
+  line-height: 22px;
+}
+
+.wrapper .alert_wrap button{
+  border: 0px;
+  display: block;
+  color: #fff;
+  width: 100%;
+  padding: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.wrapper .alert_wrap.success button{
+  background: #69d1a0;
+}
+
+.wrapper .alert_wrap.error button{
+  background: #e54053;
+}
+
+.wrapper .alert_wrap.success button:hover{
+  background: #71e5ae;
+}
+
+.wrapper .alert_wrap.error button:hover{
+  background: #ff8694;
+}

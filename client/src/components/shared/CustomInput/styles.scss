@@ -1,0 +1,35 @@
+.custom-input {
+  // margin: 10px 0;
+  // width: 100%;
+  text-align: left;
+  .custom-input__label {
+    font-size: 13px;
+    font-weight:bold;
+    color: black;
+  }
+
+  .custom-input__error {
+    color: red;
+    font-size: 13px;
+    margin: 10px;
+  }
+
+  .field-requirment {
+    color: red;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .visibility-icon {
+    position: absolute;
+    right: 8px;
+    top: 9px;
+    cursor: pointer;
+  }
+}
+
+.visibility-icon {
+  svg {
+    color: black;
+  }
+}
