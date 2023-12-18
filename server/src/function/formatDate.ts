@@ -1,6 +1,9 @@
 export default function formatDate(): string {
-    // Convert the string to a Date object
-    const date = new Date();
+    // Set múi giờ Việt Nam (UTC+7)
+    const timeZone = "Asia/Ho_Chi_Minh";
+    
+    // Create a new Date object with the current time and the specified time zone
+    const date = new Date(new Date().toLocaleString("en-US", { timeZone }));
 
     // Create arrays containing day, month, and year information
     const months = [
