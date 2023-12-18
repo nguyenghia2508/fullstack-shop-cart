@@ -133,7 +133,12 @@ const Product = () => {
       }
     }
     catch (err) {
-      console.log(err)
+      const errors = err.data.msg
+        toast.error(errors, {
+          position: 'top-left',
+          autoClose: 3000,
+          style: { color: '$color-default', backgroundColor: '#fff' },
+      });
     }
   }
 
