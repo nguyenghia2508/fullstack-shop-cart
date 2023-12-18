@@ -1,15 +1,13 @@
 {
-  "name": "shopcart",
+  "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "engines": {
     "node": "18.x"
   },
   "scripts": {
     "start": "nodemon src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "GENERATE_SOURCEMAP=false react-scripts build"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
