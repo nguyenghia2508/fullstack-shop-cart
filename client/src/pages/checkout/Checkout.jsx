@@ -11,6 +11,7 @@ import MainLayout from "../../components/layout/main/MainLayout"
 import userApi from "../../api/userApi"
 import addDos from "../../functions/addDos"
 import billApi from "../../api/billApi";
+import {setCheckoutStatus} from "../../redux/features/checkoutSlide"
 import { toast } from "react-toastify";
 
 import './checkout.scss'
@@ -36,6 +37,7 @@ const Checkout = () => {
       });
 
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const user = useSelector((state) => state.user.value)
     const userCart = useSelector((state) => state.userCart.value)
@@ -65,11 +67,16 @@ const Checkout = () => {
                 }
             } 
             catch (err) {
-                console.log(err)
+                const errors = err.data.msg
+                toast.error(errors, {
+                    position: 'top-left',
+                    autoClose: 3000,
+                    style: { color: '$color-default', backgroundColor: '#fff' },
+                });
             }
         }
         getUserCart();
-    }, [payAction]);
+    }, []);
 
     const onSubmit = async (data) => {
         try {
@@ -105,6 +112,7 @@ const Checkout = () => {
                 setLoading(false)
                 setPayAction(true)
                 setPayMessage({message:res.msg,state:res.state})
+                dispatch(setCheckoutStatus({payAction:true}))
             }
         } 
         catch (err) {

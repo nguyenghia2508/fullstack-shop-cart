@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useState,useEffect,useRef } from "react"
 import { resetUser } from "../../redux/features/userSlice";
 import { setUserCart,resetUserCart} from "../../redux/features/useCartSlice";
+import { resetStatus } from "../../redux/features/checkoutSlide"
 import SearchBar from "./SearchBar";
 import userApi from "../../api/userApi";
 import addDos from "../../functions/addDos";
@@ -20,6 +21,7 @@ const Header = () => {
     const user = useSelector((state) => state.user.value)
     const actionProduct = useSelector((state) => state.actionProduct.value)
     const cart = useSelector((state) => state.userCart.value)
+    const checkoutStatus = useSelector((state) => state.checkout.value)
 
     const [inforProduct , setInforProduct] = useState([])
     const [totalNumber , setTotalNumber] = useState('')
@@ -46,6 +48,10 @@ const Header = () => {
                                 dispatch(setUserCart(result));
                             }
                         }
+                        if(checkoutStatus.payAction)
+                        {
+                            dispatch(resetStatus())
+                        }
                     }
                 }
             } catch (err) {
@@ -54,7 +60,7 @@ const Header = () => {
         }
     
         getUserCartInfor();
-    }, [dispatch, user,actionProduct]);
+    }, [dispatch, user,actionProduct,checkoutStatus]);
     
     const isSameCart = (newCart, currentCart) => {
         return (

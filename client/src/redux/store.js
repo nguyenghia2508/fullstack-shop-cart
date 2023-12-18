@@ -5,6 +5,7 @@ import { combineReducers } from "redux";
 import userReducer from './features/userSlice'
 import userCartReducer from './features/useCartSlice'
 import actionProductReducer from "./features/actionProductSlice";
+import checkoutReducer from "./features/checkoutSlide";
 
 const persistConfig = {
   key: 'root',
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   userCart: userCartReducer,
   actionProduct:actionProductReducer,
+  checkout:checkoutReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
