@@ -1,6 +1,9 @@
 export default function formatDate(): string {
-    // Convert the string to a Date object
-    const date = new Date();
+    // Get the current date in UTC
+    const dateUTC = new Date();
+
+    // Convert UTC date to local date
+    const dateLocal = new Date(dateUTC.getTime() - dateUTC.getTimezoneOffset() * 60000);
 
     // Create arrays containing day, month, and year information
     const months = [
@@ -8,11 +11,11 @@ export default function formatDate(): string {
     ];
 
     // Get day, month, year, and hour information
-    const day = date.getDate();
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
-    let hour = date.getHours();
-    const minute = date.getMinutes();
+    const day = dateLocal.getDate();
+    const month = months[dateLocal.getMonth()];
+    const year = dateLocal.getFullYear();
+    let hour = dateLocal.getHours();
+    const minute = dateLocal.getMinutes();
     const period = hour >= 12 ? "PM" : "AM";
 
     // Format the hour
