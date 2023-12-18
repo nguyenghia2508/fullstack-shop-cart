@@ -133,7 +133,7 @@ const Product = () => {
       }
     }
     catch (err) {
-      const errors = err.data.msg
+      const errors = err.data.message
         toast.error(errors, {
           position: 'top-left',
           autoClose: 3000,
