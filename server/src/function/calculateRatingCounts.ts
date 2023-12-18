@@ -1,4 +1,8 @@
-export default function calculateRatingCounts(listReview: { rating: number }[]): { rating: number, count: number, percent: string }[] {
+export default function calculateRatingCounts(listReview: { rating: number }[] | null | undefined): { rating: number, count: number, percent: string }[] {
+    if (!listReview) {
+        return [];
+    }
+
     const ratingCounts: Record<string, number> = {
         "1": 0,
         "2": 0,
