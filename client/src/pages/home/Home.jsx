@@ -304,7 +304,7 @@ const Home = () => {
                             <button className="quick-view"><i className="fa fa-eye"></i><span className="tooltipp">quick view</span></button>
                           </div>
                           <div className="product-calculate">
-                            <span className="totalSold">{item.totalSold ? item.totalSold : 0 }</span>
+                            <span className="totalSold">{item.totalSold ? item.totalSold : 0 } sold</span>
                             <span className="review-counting">{item.count > 0 ? item.count : 0} reviews</span>
                             </div>
                         </div>
@@ -349,7 +349,7 @@ const Home = () => {
                           <button className="quick-view"><i className="fa fa-eye"></i><span className="tooltipp">quick view</span></button>
                         </div>
                         <div className="product-calculate">
-                          <span className="totalSold">{item.totalSold ? item.totalSold : 0 }</span>
+                          <span className="totalSold">{item.totalSold ? item.totalSold : 0 } sold</span>
                           <span className="review-counting">{item.count > 0 ? item.count : 0} reviews</span>
                         </div>
                       </div>
