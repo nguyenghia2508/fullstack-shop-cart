@@ -305,6 +305,10 @@ router.post('/:id', async (req: Request, res: Response, next: NextFunction) => {
         {
             res.status(200).send({ code: '15', message: 'You need to login' ,state:'false'});
         }
+        else if (body.reviewText && body.reviewText.length > 2500) {
+            res.status(400).send({ code: '14', message: 'Review text should not exceed 2500 characters', state: 'false' });
+            return;
+        }
 
         const product = await Product.findOne({ name: { $regex: `^${id}$`, $options: 'i' } });
 
