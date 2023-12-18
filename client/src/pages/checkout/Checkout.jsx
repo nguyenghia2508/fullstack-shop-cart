@@ -112,7 +112,7 @@ const Checkout = () => {
                 setLoading(false)
                 setPayAction(true)
                 setPayMessage({message:res.msg,state:res.state})
-                dispatch(setCheckoutStatus({payAction:true}))
+                dispatch(setCheckoutStatus(true))
             }
         } 
         catch (err) {

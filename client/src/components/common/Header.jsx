@@ -11,6 +11,7 @@ import addDos from "../../functions/addDos";
 import DeleteCartButton from "../../components/common/DeleteCartButton"
 import useDeleteCartProduct from "../../functions/deleteCartProduct";
 import ProductLink from "../common/ProductLink"
+import { batch } from "react-redux";
 
 const Header = () => {
 
@@ -41,17 +42,19 @@ const Header = () => {
                     {
                         // Kiểm tra xem dữ liệu từ server có thay đổi không
                         if (!isSameCart(result, cart)) {
-                            setInforProduct(result.infoProduct);
-                            setTotalNumber(result.totalNumber);
-                            setTotalPrice(result.totalPrice);
-                            if (!isSameCart(result, cart)) {
-                                dispatch(setUserCart(result));
-                            }
+                            batch(() => {
+                                setInforProduct(result.infoProduct);
+                                setTotalNumber(result.totalNumber);
+                                setTotalPrice(result.totalPrice);
+                                if (!isSameCart(result, cart)) {
+                                    dispatch(setUserCart(result));
+                                }
+                            });
                         }
-                        if(checkoutStatus.payAction)
-                        {
-                            dispatch(resetStatus())
-                        }
+                    }
+                    if(checkoutStatus)
+                    {
+                        dispatch(resetStatus())
                     }
                 }
             } catch (err) {
@@ -103,6 +106,8 @@ const Header = () => {
         dispatch(resetUserCart());
         navigate(0)
     }
+
+    console.log(checkoutStatus)
 
     return (
         <>
