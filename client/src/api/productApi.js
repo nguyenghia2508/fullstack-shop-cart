@@ -14,11 +14,6 @@ const productApi = {
   axiosClient.post(`api/store/page/${page}`,{listType,minPrice,maxPrice,sortBy,perPage,page}),
 
   getTypeProduct : () => axiosClient.get(`api/getAllType`),
-  
-  // delete: (id) => axiosClient.delete(`boards/${id}`),
-  // update: (id, params) => axiosClient.put(`boards/${id}`, params),
-  // getFavourites: () => axiosClient.get('boards/favourites'),
-  // updateFavouritePosition: (params) => axiosClient.put('boards/favourites', params)
 }
 
 export default productApi
