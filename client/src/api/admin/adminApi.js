@@ -17,10 +17,6 @@ const adminApi = {
   editProduct: ({id,data}) => axiosClient.post(`api/admin/edit-product/${id}`,data),
 
   deleteProduct: (id) => axiosClient.post(`api/admin/delete-product/${id}`),
-
-  // update: (id, params) => axiosClient.put(`boards/${id}`, params),
-  // getFavourites: () => axiosClient.get('boards/favourites'),
-  // updateFavouritePosition: (params) => axiosClient.put('boards/favourites', params)
 }
 
 export default adminApi
