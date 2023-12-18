@@ -320,11 +320,11 @@ router.post('/:id', async (req: Request, res: Response, next: NextFunction) => {
             date: formatDate()
           };
 
-        const updateResult = await Rating.updateOne({ productName: { $regex: `^${id}$`, $options: 'i' } },
+        const updateRating = await Rating.updateOne({ productName: { $regex: `^${id}$`, $options: 'i' } },
             { $push: { listReview } }
         );
 
-        if(updateResult)
+        if(updateRating)
         {
             const rt = await Rating.findOne({ productName: { $regex: `^${id}$`, $options: 'i' } }, { listReview: 1 });
             if(rt)
