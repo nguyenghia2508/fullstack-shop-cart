@@ -69,7 +69,7 @@ const Checkout = () => {
             }
         }
         getUserCart();
-    }, []);
+    }, [payAction]);
 
     const onSubmit = async (data) => {
         try {
