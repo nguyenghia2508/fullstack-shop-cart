@@ -1,6 +1,7 @@
 import Product from "../models/Product"
 
 interface CartItem {
+  productID: string;
   productName: string;
   productNumber: number;
   productPrice: number;
@@ -17,9 +18,10 @@ export default async function getTotalPriceAndNumber(carts: CartItem[]) {
   const infoProduct: CartItem[] = [];
 
   for (const ct of carts) {
-    const pc = await Product.exists({ name: ct.productName });
+    const pc = await Product.findOne({ name: ct.productName });
     if (pc) {
       infoProduct.push({
+        productID: pc.productID,
         productName: ct.productName,
         productNumber: ct.productNumber,
         productPrice: ct.productPrice,

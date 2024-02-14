@@ -7,6 +7,7 @@ interface ProductImage {
 }
 
 interface CartItem extends Document {
+  productID: string;
   productName: string;
   productNumber: number;
   productPrice: number;
@@ -31,6 +32,9 @@ const productImageSchema: Schema<ProductImage> = new Schema<ProductImage>({
 });
 
 const cartItemSchema: Schema<CartItem> = new Schema<CartItem>({
+  productID: {
+    type: String,
+  },
   productName: {
     type: String,
   },

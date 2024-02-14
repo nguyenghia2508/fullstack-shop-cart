@@ -12,7 +12,7 @@ const seedAdmin = async () => {
       const newAdmin: IUser = new User({
         username: 'admin',
         email: 'binlatao5@gmail.com',
-        password: '123456',
+        password: process.env.PASSWORD,
         fullname: 'Admin',
         role: 0,
       });

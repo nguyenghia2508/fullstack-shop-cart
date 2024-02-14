@@ -7,6 +7,7 @@ interface ProductImage {
 }
 
 export interface IProduct extends Document {
+  productID:string;
   name: string;
   number: number;
   price: number;
@@ -19,6 +20,9 @@ export interface IProduct extends Document {
 }
 
 const productSchema: Schema<IProduct> = new Schema<IProduct>({
+  productID: {
+    type: String,
+  },
   name: {
     type: String,
   },

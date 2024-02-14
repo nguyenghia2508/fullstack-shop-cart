@@ -17,6 +17,7 @@ import Product from '../models/Product';
 import User from '../models/User';
 import userCart from '../models/userCart';
 import Bill from '../models/Bill';
+import Transactions from '../models/Transactions';
 
 // import config from '../config/auth.config';
 // import jwt from 'jsonwebtoken';
@@ -243,7 +244,12 @@ router.post('/check-out', billingValidator,verifyUser.verifyToken, async (req: R
                 PayMethod(creditCardBill),
                 addDos(totalPrice)
               );
-  
+              
+              const listProduct = infoProduct.map(item => item.productID).sort((a: string,b: string) => a.localeCompare(b)).join(', ')
+              const transaction = new Transactions({
+                listProduct:listProduct
+              })
+
               if (body.emailBill) {
                 const mailOptions = {
                   from: 'Electro Shop <noreply.electroshop@gmail.com>',
@@ -270,7 +276,7 @@ router.post('/check-out', billingValidator,verifyUser.verifyToken, async (req: R
                   await bill.save();
   
                   await userCart.deleteOne({ username: user });
-  
+                  
                   infoProduct.forEach(async (p: any) => {
                     const product = await Product.findOne({ name: p.productName });
   
@@ -287,7 +293,12 @@ router.post('/check-out', billingValidator,verifyUser.verifyToken, async (req: R
                       );
                     }
                   });
-  
+                  
+                  const existingTransaction = await Transactions.exists({listProduct:listProduct});
+                  if (!existingTransaction) {
+                    await transaction.save()
+                  }
+
                   transporter.sendMail(mailOptions, (error: any, info: any) => {
                     if (error) {
                       console.log(error);
@@ -295,6 +306,7 @@ router.post('/check-out', billingValidator,verifyUser.verifyToken, async (req: R
                     else
                     {
                       const message = 'We will send invoice information via email. Please check your mailbox';
+                      
                       return res.status(200).json({
                         param: 'userCart',
                         state: 'success',
@@ -338,7 +350,12 @@ router.post('/check-out', billingValidator,verifyUser.verifyToken, async (req: R
                       );
                     }
                   });
-  
+                  
+                  const existingTransaction = await Transactions.exists({listProduct:listProduct});
+                  if (!existingTransaction) {
+                    await transaction.save()
+                  }
+
                   transporter.sendMail(mailOptions, (error: any, info: any) => {
                     if (error) {
                       console.log(error);
@@ -397,7 +414,12 @@ router.post('/check-out', billingValidator,verifyUser.verifyToken, async (req: R
                       );
                     }
                   });
-  
+                  
+                  const existingTransaction = await Transactions.exists({listProduct:listProduct});
+                  if (!existingTransaction) {
+                    await transaction.save()
+                  }
+
                   transporter.sendMail(mailOptions, (error: any, info: any) => {
                     if (error) {
                       console.log(error);
@@ -445,7 +467,12 @@ router.post('/check-out', billingValidator,verifyUser.verifyToken, async (req: R
                       );
                     }
                   });
-  
+                  
+                  const existingTransaction = await Transactions.exists({listProduct:listProduct});
+                  if (!existingTransaction) {
+                    await transaction.save()
+                  }
+                  
                   transporter.sendMail(mailOptions, (error: any, info: any) => {
                     if (error) {
                       console.log(error);
