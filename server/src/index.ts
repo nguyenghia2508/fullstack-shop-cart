@@ -18,16 +18,16 @@ const reduceOp = function (args: IArguments, reducer: (a: any, b: any) => any) {
     return argsArray.reduce(reducer, first);
 };
 
-const sessionConfig = {
-  secret: "secret",
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    secure: false, // if set to true tests won't work
-    maxAge: 10 * 60 * 1000 * 100000,
-    sameSite: 'none',
-  },
-};
+// const sessionConfig = {
+//   secret: "secret",
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: {
+//     secure: false, // if set to true tests won't work
+//     maxAge: 10 * 60 * 1000 * 100000,
+//     sameSite: 'none',
+//   },
+// };
 
 // const listDomain =  [
 //   'https://shop-cart-vercel-api.vercel.app/api',
