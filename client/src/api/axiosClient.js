@@ -1,7 +1,7 @@
 import axios from 'axios'
 import queryString from 'query-string'
 
-const baseUrl = 'https://shop-cart-vercel.vercel.app'
+const baseUrl = 'https://shop-cart-vercel-api.vercel.app'
 const getToken = () => localStorage.getItem('token')
 
 const axiosClient = axios.create({
