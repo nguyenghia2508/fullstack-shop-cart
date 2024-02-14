@@ -52,6 +52,10 @@ function SignInForm() {
     }
   }
 
+  const handlePressEnter = () => {
+    handleSubmit(onSubmit)();
+  };  
+
   return (
     <div className="form-container sign-in-container">
       {loading ? (
@@ -92,6 +96,7 @@ function SignInForm() {
               className="password-login"
               setValue={setValue}
               register={register}
+              onPressEnter={handlePressEnter}
             >
             {errors.password? errors.password.message : message}
             </CustomInput>

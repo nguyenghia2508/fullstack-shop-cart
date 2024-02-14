@@ -7,11 +7,12 @@ import FormattedDateTime from '../../../functions/FormattedDateTime'
 import PaginationAdmin from '../../../components/admin/PaginationAdmin'
 import Loading from "../../../components/common/Loading";
 import { toast } from "react-toastify";
+import "./styles.scss"
 
-const ProductAdmin = () => {
+const ListTypeProduct = () => {
 
     const [currentPage, setCurrentPage] = useState(1); // Giả sử giá trị ban đầu là 1
-    const [infoProduct, setInfoProduct] = useState([]);
+    const [infoType, setInfoType] = useState([]);
     const [nextPage, setNextPage] = useState(1); // Giả sử giá trị ban đầu là 1
     const [pageTotal, setPageTotal] = useState(1); // Giả sử giá trị ban đầu là 1
     const [prevPage, setPrevPage] = useState(1); // Giả sử giá trị ban đầu là 1
@@ -25,11 +26,11 @@ const ProductAdmin = () => {
     useEffect(() => {
         const getListProduct= async () => {
             try {
-                const data = await adminApi.getListProduct({page:deleteItem ? 1 : page})
+                const data = await adminApi.getListType({page:deleteItem ? 1 : page})
                 setDeleteItem(false)
                 setTitle(data.title)
                 setCurrPage(data.currPage)
-                setInfoProduct(data.result)
+                setInfoType(data.result)
                 setPageTotal(data.pageTotal)
                 setPrevPage(data.prevPage)
                 setTotalPages(data.totalPages)
@@ -42,11 +43,10 @@ const ProductAdmin = () => {
         getListProduct();
     }, [deleteItem]);
 
-
     const handleSwitchPage = async ({e,page}) =>{
         try {
-            const data = await adminApi.getListProduct({page:page})
-            setInfoProduct(data.result)
+            const data = await adminApi.getListType({page:page})
+            setInfoType(data.result)
             setPageTotal(data.pageTotal)
             setPrevPage(data.prevPage)
             setTotalPages(data.totalPages)
@@ -62,7 +62,7 @@ const ProductAdmin = () => {
     const handleDelete = async (id) =>{
         try {
             setLoading(true)
-            const res = await adminApi.deleteProduct(id)
+            const res = await adminApi.deleteType(id)
             if (res.state === 'success') {
                 setLoading(false)
                 toast.success(res.message, {
@@ -71,7 +71,7 @@ const ProductAdmin = () => {
                     style: { color: '$color-default', backgroundColor: '#fff' },
                 });
                 setDeleteItem(true)
-                if(infoProduct.length - 1 === 0)
+                if(infoType.length - 1 === 0)
                 {
                     setPage(page - 1)
                 }
@@ -86,6 +86,7 @@ const ProductAdmin = () => {
         }
     } 
 
+    
     return (
         <AdminLayout 
         title={title}
@@ -102,7 +103,7 @@ const ProductAdmin = () => {
                         </form>
                     </span>
                     <div className="col-sm-4">
-                        <Link to="/admin/add-product">
+                        <Link to="/admin/add-type">
                             <button type="button" className="btn btn-info add-new"><i className="fa fa-plus"></i> Add New</button>
                         </Link>
                         <button type="button" className="btn btn-info add-new"><i className="fa fa-plus"></i> Export</button>
@@ -116,38 +117,24 @@ const ProductAdmin = () => {
                             <table className="table-admin">
                                 <thead className="table-thead-admin">
                                     <tr>
-                                        <th className="table-thead-admin-id">No.</th>
-                                        <th className="table-thead-admin-user">Product</th>
-                                        <th className="table-thead-admin-number">Number</th>
-                                        <th className="table-thead-admin-price">Price</th>
-                                        <th className="table-thead-admin-phone">Categories</th>
-                                        <th className="table-thead-admin-joindate">Date of manufacture</th>
+                                        <th className="table-thead-admin-id">ID</th>
+                                        <th className="table-thead-admin-user">Type</th>
                                         <th className="table-thead-admin-action" style={{textAlign: "center"}}>Actions</th>
                                     </tr>
                                 </thead>
-                                {infoProduct && infoProduct.length !== 0 
+                                {infoType && infoType.length !== 0 
                                 ? 
-                                infoProduct.map((item,index) => (
+                                infoType.map((item,index) => (
                                     <tbody className="table-tbody" key={index}>
                                         <tr>
                                             <td className="table-tbody-td-id">{(currentPage - 1) * 10 + index + 1}</td>                                            
                                             <td className="table-tbody-td-info">
-                                                <img src={`${item.image.path}`} className="table-tbody-td-img" alt="Image"/>
-                                                <div className="table-tbody-td-name-email">
-                                                    <span className="table-tbody-td-name">{item.name}</span>
+                                                <div className="table-tbody-td-name-email" id="table-tbody-td-type-ske">
+                                                    <span className="table-tbody-td-name" id="table-tbody-td-type-name">{item.typeProduct}</span>
                                                 </div>
                                             </td>
-                                            <td className="table-tbody-td-number">{item.number}</td>
-                                            <td className="table-tbody-td-number">{item.price}</td>
-                                            <td className="table-tbody-td-number">{item.category}</td>
-                                            <td className="table-tbody-td-date">
-                                                <span>{FormattedDateTime(item.date)}</span>
-                                            </td>
                                             <td>
-                                                <Link to={`/admin/detail-product/${item._id}`}  className="table-tbody-td-action">
-                                                    <span>Detail</span>
-                                                </Link>
-                                                <Link to={`/admin/edit-product/${item._id}`} style={{marginLeft:'10px'}} className="table-tbody-td-action">
+                                                <Link to={`/admin/edit-type/${item._id}`} style={{marginLeft:'10px'}} className="table-tbody-td-action">
                                                     <span>Edit</span>
                                                 </Link>
                                                 <button to="" style={{marginLeft:'10px'}} 
@@ -211,4 +198,4 @@ const ProductAdmin = () => {
     )
 };
 
-export default ProductAdmin;
+export default ListTypeProduct;

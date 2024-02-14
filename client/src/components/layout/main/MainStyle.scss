@@ -570,7 +570,7 @@ textarea.input {
 /* Hide the scrollbar in all browsers */
 .cart-dropdown .cart-list {
   scrollbar-width: thin;  /* Firefox */
-  scrollbar-color: transparent transparent;  /* Firefox */
+  // scrollbar-color: transparent transparent;  /* Firefox */
   padding-right: 15px;  /* Compensate for the space that the scrollbar would occupy */
 }
 

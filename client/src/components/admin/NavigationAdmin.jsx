@@ -113,6 +113,10 @@ const NavigationAdmin = ({ fullname }) => {
                                     <span className="nav-admin-menu-items-dot-exra"></span>
                                     <span className="nav-admin-menu-items-name-extra">Categories</span>
                                 </Link>
+                                <Link to="/admin/list-transaction" className="nav-admin-menu-items-link-extra">
+                                    <span className="nav-admin-menu-items-dot-exra"></span>
+                                    <span className="nav-admin-menu-items-name-extra">Transactions</span>
+                                </Link>
                             </div>
                         </div>
                     </div>

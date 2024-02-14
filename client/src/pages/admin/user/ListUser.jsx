@@ -9,7 +9,7 @@ import PaginationAdmin from '../../../components/admin/PaginationAdmin'
 const ListUser = () => {
 
     const [currentPage, setCurrentPage] = useState(1); // Giả sử giá trị ban đầu là 1
-    const [infoProduct, setinfoProduct] = useState([]);
+    const [infoUser, setInfoUser] = useState([]);
     const [nextPage, setNextPage] = useState(1); // Giả sử giá trị ban đầu là 1
     const [pageTotal, setPageTotal] = useState(1); // Giả sử giá trị ban đầu là 1
     const [prevPage, setPrevPage] = useState(1); // Giả sử giá trị ban đầu là 1
@@ -24,7 +24,7 @@ const ListUser = () => {
                 const data = await adminApi.getListUser({page:page})
                 setTitle(data.title)
                 setCurrPage(data.currPage)
-                setinfoProduct(data.result)
+                setInfoUser(data.result)
                 setPageTotal(data.pageTotal)
                 setPrevPage(data.prevPage)
                 setTotalPages(data.totalPages)
@@ -41,7 +41,7 @@ const ListUser = () => {
     const handleSwitchPage = async ({e,page}) =>{
         try {
             const data = await adminApi.getListUser({page:page})
-            setinfoProduct(data.result)
+            setInfoUser(data.result)
             setPageTotal(data.pageTotal)
             setPrevPage(data.prevPage)
             setTotalPages(data.totalPages)
@@ -79,9 +79,9 @@ const ListUser = () => {
                                         <th className="table-thead-admin-phone">Full Name</th>
                                     </tr>
                                 </thead>
-                                {infoProduct && infoProduct.length !== 0 
+                                {infoUser && infoUser.length !== 0 
                                 ? 
-                                infoProduct.map((item,index) => (
+                                infoUser.map((item,index) => (
                                     <tbody className="table-tbody" key={index}>
                                         <tr>
                                             <td className="table-tbody-td-id">{(currentPage - 1) * 10 + index + 1}</td>                                            

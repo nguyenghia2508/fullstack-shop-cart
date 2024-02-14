@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { useState,useEffect } from "react"
 import { Controller, useForm } from "react-hook-form";
 import AdminLayout from "../../../../components/layout/admin/AdminLayout";
@@ -6,13 +6,10 @@ import adminApi from "../../../../api/admin/adminApi";
 import Loading from "../../../../components/common/Loading";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {schema} from './data';
-import './add-resize-style.css'
-import './add-style.scss'
+import '../add/add-style.scss'
 import { toast } from "react-toastify";
 
-const AddProduct = () => {
-
-    const [listType, setListType] = useState([])
+const EditType = () => {
 
     const {
         handleSubmit,
@@ -26,51 +23,43 @@ const AddProduct = () => {
         submit
     } = useForm({
         mode: 'all',
-        resolver: yupResolver(schema(listType)),
+        resolver: yupResolver(schema()),
     });
     
     const navigate = useNavigate()
+    const type = useParams()
 
     const [title, setTitle] = useState(null)
     const [currPage, setCurrPage] = useState(null)
     const [loading, setLoading] = useState(false)
+    const [typeProduct, setTypeProduct] = useState("")
+
 
     useEffect(() => {
-        const getAddTitleProduct= async () => {
+        const getEditType= async () => {
             try {
-                const data = await adminApi.getAddTitle()
+                const data = await adminApi.getEditType(type.id)
                 setTitle(data.title)
                 setCurrPage(data.currPage)
-                setListType(data.listType.map(item => item.typeProduct).sort((a,b) => a.localeCompare(b)))
+                setTypeProduct(data.typeProduct)
             } catch (err) {
-                console.log(err)
+                const errors = err.data.msg
+                toast.error(errors, {
+                    position: 'top-left',
+                    autoClose: 3000,
+                    style: { color: '$color-default', backgroundColor: '#fff' },
+                });
             }
         }
-        getAddTitleProduct();
+        getEditType();
     }, []);
 
     const onSubmit = async (data) => {
         try {
-            const formData = new FormData();
-            formData.append('productID', data.productID);
-            formData.append('name', data.name);
-            formData.append('number', data.number);
-            formData.append('price', data.price);
-            formData.append('dom', data.dom);
-            formData.append('type', data.type);
-            formData.append('desc', data.desc);
-            formData.append('detail', data.detail);
-
-            if (data.myImage && data.myImage.length > 0) {
-                for (let i = 0; i < data.myImage.length; i++) {
-                    formData.append('myImage', data.myImage[i]);
-                }
-            }
-            setLoading(true)
-            const res = await adminApi.addProduct(formData)
+            const res = await adminApi.editType(({id:type.id,data:data}))
             if (res.state === 'success') {
                 setLoading(false)
-                navigate('/admin/list-product')
+                navigate('/admin/list-type')
                 toast.success(res.message, {
                     position: 'top-left',
                     autoClose: 3000,
@@ -87,7 +76,6 @@ const AddProduct = () => {
             });
         }
     }
-
     return (
         <AdminLayout 
         title={title}
@@ -140,103 +128,20 @@ const AddProduct = () => {
                         </svg>
                         {loading ? <Loading/> :
                         (
-                        <form encType="multipart/form-data" onSubmit={handleSubmit(onSubmit)}>
+                        <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="formbold-input-wrapp formbold-mb-3">
-                                <label htmlFor="productID" className="formbold-form-label"> ID </label>
-                                <input
-                                type="text"
-                                name="productID"
-                                id="productID"
-                                placeholder="Product ID"
-                                className="formbold-form-input"
-                                {...register("productID")}
-                                />
-                            </div>
-                            <div className="error-notice">
-                            {errors.productID && (
-                                    <div id="error-file" className="layout-content-group error-form">
-                                        {errors.productID.message}
-                                    </div>
+                                <label htmlFor="type" className="formbold-form-label"> Product Type </label>
+                                {typeProduct && (
+                                    <input
+                                        type="text"
+                                        name="type"
+                                        id="type"
+                                        placeholder="Product type"
+                                        defaultValue={typeProduct}
+                                        className="formbold-form-input"
+                                        {...register("type")}
+                                    />
                                 )}
-                            </div>
-                            <div className="formbold-input-wrapp formbold-mb-3">
-                                <label htmlFor="name" className="formbold-form-label"> Name </label>
-                                <input
-                                type="text"
-                                name="name"
-                                id="name"
-                                placeholder="Product name"
-                                className="formbold-form-input"
-                                {...register("name")}
-                                />
-                            </div>
-                            <div className="error-notice">
-                            {errors.name && (
-                                    <div id="error-file" className="layout-content-group error-form">
-                                        {errors.name.message}
-                                    </div>
-                                )}
-                            </div>
-                            <div className="formbold-mb-3">
-                                <label htmlFor="number" className="formbold-form-label"> Number </label>
-                                <input
-                                type="number"
-                                name="number"
-                                id="number"
-                                placeholder="0"
-                                className="formbold-form-input"
-                                {...register("number")}
-                                />
-                            </div>
-                            <div className="error-notice">
-                            {errors.number && (
-                                    <div id="error-file" className="layout-content-group error-form">
-                                        {errors.number.message}
-                                    </div>
-                                )}
-                            </div>
-                            <div className="formbold-mb-3">
-                                <label htmlFor="price" className="formbold-form-label"> Price </label>
-                                <input
-                                type="number"
-                                name="price"
-                                id="price"
-                                placeholder="0"
-                                className="formbold-form-input"
-                                {...register("price")}
-                                />
-                            </div>
-                            <div className="error-notice">
-                            {errors.price && (
-                                    <div id="error-file" className="layout-content-group error-form">
-                                        {errors.price.message}
-                                    </div>
-                                )}
-                            </div>
-                            <div className="formbold-mb-3">
-                                <label htmlFor="dom" className="formbold-form-label"> Date of manufacture </label>
-                                <input type="datetime-local" name="dom" id="dom" className="formbold-form-input" 
-                                {...register("dom")}
-                                />
-                            </div>
-                            <div className="error-notice">
-                            {errors.dom && (
-                                    <div id="error-file" className="layout-content-group error-form">
-                                        {errors.dom.message}
-                                    </div>
-                                )}
-                            </div>
-                            <div className="formbold-mb-3">
-                                <label className="formbold-form-label">Categories</label>
-                                <select className="formbold-form-input type" name="type" id="type"
-                                defaultValue=""
-                                {...register("type")}
-                                >
-                                    <option disabled value="">Choose type</option>
-                                    {listType.length > 0 && listType.map((item,index) =>(
-                                        <option value={`${item}`} key={index}>{item}</option>
-                                    ))}
-                                </select>
                             </div>
                             <div className="error-notice">
                             {errors.type && (
@@ -244,51 +149,6 @@ const AddProduct = () => {
                                         {errors.type.message}
                                     </div>
                                 )}
-                            </div>
-                            <div className="formbold-input">
-                                <div>
-                                    <label htmlFor="detail" className="formbold-form-label"> Details </label>
-                                    <textarea rows="4" cols="10" name="detail" id = "detail" className="formbold-form-input"
-                                    {...register("detail")}
-                                    ></textarea>
-                                </div>
-                            </div>
-                            <div className="error-notice">
-                            {errors.detail && (
-                                    <div id="error-file" className="layout-content-group error-form">
-                                        {errors.detail.message}
-                                    </div>
-                                )}
-                            </div>
-                            <div className="formbold-input">
-                                <div>
-                                    <label htmlFor="desc" className="formbold-form-label"> Description </label>
-                                    <textarea rows="4" cols="10" name="desc" id = "desc" className="formbold-form-input"
-                                    {...register("desc")}
-                                    ></textarea>
-                                </div>
-                            </div>
-                            <div className="error-notice">
-                            {errors.desc && (
-                                    <div id="error-file" className="layout-content-group error-form">
-                                        {errors.desc.message}
-                                    </div>
-                                )}
-                            </div>
-                            <div className="formbold-mb-3">
-                                <label htmlFor="uploadImage" className="formbold-form-label">
-                                Upload image
-                                </label>
-                                <input type="file" name="myImage" id="uploadImage" className="formbold-form-input formbold-form-file"
-                                {...register("myImage")}
-                                />
-                            </div>
-                            <div className="error-notice">
-                            {errors.myImage && (
-                                <div id="error-file" className="layout-content-group error-form">
-                                    {errors.myImage.message}
-                                </div>
-                            )}
                             </div>
                             <div className="formbold-mb-3">
                                 <button id="submit-button" type="submit" className="formbold-btn">Submit</button>
@@ -303,4 +163,4 @@ const AddProduct = () => {
     )
 };
 
-export default AddProduct;
+export default EditType;

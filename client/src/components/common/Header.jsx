@@ -107,8 +107,6 @@ const Header = () => {
         navigate(0)
     }
 
-    console.log(checkoutStatus)
-
     return (
         <>
         <div id="top-header">
@@ -168,7 +166,7 @@ const Header = () => {
                                             inforProduct.map((item,index) => (
                                             <div className="product-widget" key={index}>
                                                 <div className="product-img">
-                                                <img src={`${item.productImage.path}`} alt="" />
+                                                    <img src={`${item.productImage.path}`} alt="" />
                                                 </div>
                                                 <div className="product-body">
                                                 <h3 id="product-name-dropdown" className="product-name">
@@ -200,7 +198,7 @@ const Header = () => {
                                         )}
                                     </div>
                                     <div className="cart-btns">
-                                        <a href="#">View Cart</a>
+                                        <Link to="/user/cart-view">View Cart</Link>
                                         <Link to="/user/check-out">Checkout  <i className="fa fa-arrow-circle-right"></i></Link>
                                     </div>
                                 </div>

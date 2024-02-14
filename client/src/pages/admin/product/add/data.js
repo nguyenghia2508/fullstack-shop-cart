@@ -2,13 +2,15 @@
 
 import * as yup from 'yup';
 
-const typeList = ['Laptop', 'Smartphone', 'Camera']
+export const schema = (listType) => {
+    
+    // Use the map function to create an array of option values
+    const typeOptionValues = listType.map((type, index) => type.toString());
 
-// Use the map function to create an array of option values
-const typeOptionValues = typeList.map((type, index) => type.toString());
-
-export const schema = () => {
     return yup.object({
+    productID: yup
+        .string()
+        .required('* Please enter product ID'),
     name: yup
         .string()
         .required('* Please enter product name'),

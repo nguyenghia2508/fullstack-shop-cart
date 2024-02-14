@@ -1,0 +1,75 @@
+.order-details{
+  .cart-summary {
+      display: flex;
+      flex-direction: column;
+  }
+
+  .cart-summary {
+    margin: 15px 0px;
+  }
+  
+  .cart-summary .order-col {
+    width: 100%;
+  }
+  
+  .cart-summary .order-col:after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+  
+  .cart-summary .order-col>div {
+    // display: table-cell;
+    padding: 10px 0px;
+  }
+  
+  .cart-summary .order-col>div:first-child {
+    width: calc(100% - 150px);
+  }
+  
+  
+  .order-col {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .order-col > div {
+      flex: 1;
+      padding: 10px; /* Thêm padding để tạo khoảng cách giữa các cột */
+  }
+  
+  .product-infor {
+      display: flex;
+      div{
+        width: 100%;
+      }
+  }
+  
+  .order-products{
+      .order-col{
+        .product-infor{
+          flex: 3;
+          .product-img{
+            img{
+                width: 60px
+            }
+        }
+        }
+        .product-action{
+          flex: 1;
+          .delete {
+            position: absolute;
+            height: 14px;
+            width: 14px;
+            text-align: center;
+            font-size: 10px;
+            padding: 0;
+            background: #1e1f29;
+            border: none;
+            color: #FFF;
+          }
+        }
+      }
+  }
+}

@@ -11,6 +11,9 @@ import '../detail/detail-style.scss'
 import '../add/add-style.scss'
 
 const EditProduct = () => {
+
+    const [listType, setListType] = useState([])
+
     const {
         handleSubmit,
         formState: { errors },
@@ -23,7 +26,7 @@ const EditProduct = () => {
         submit
     } = useForm({
         mode: 'all',
-        resolver: yupResolver(schema()),
+        resolver: yupResolver(schema(listType)),
     });
 
     const navigate = useNavigate()
@@ -36,12 +39,13 @@ const EditProduct = () => {
     const [imagePreview, setImagePreview] = useState(null);
 
     useEffect(() => {
-        const getDetailProduct= async () => {
+        const getEditProduct= async () => {
             try {
                 const data = await adminApi.getEditProduct(product.id)
                 setTitle(data.title)
                 setCurrPage(data.currPage)
                 setinfoProduct(data.result)
+                setListType(data.listType.map(item => item.typeProduct).sort((a,b) => a.localeCompare(b)))
             } catch (err) {
                 const errors = err.data.msg
                 toast.error(errors, {
@@ -51,7 +55,7 @@ const EditProduct = () => {
                 });
             }
         }
-        getDetailProduct();
+        getEditProduct();
     }, []);
 
     const handleImageChange = (e) => {
@@ -69,6 +73,7 @@ const EditProduct = () => {
     const onSubmit = async (data) => {
         try {
             const formData = new FormData();
+            formData.append('productID', data.productID);
             formData.append('name', data.name);
             formData.append('number', data.number);
             formData.append('price', data.price);
@@ -132,6 +137,25 @@ const EditProduct = () => {
                                     )}
                                 </div>
                                 <form encType="multipart/form-data" onSubmit={handleSubmit(onSubmit)}>
+                                    <div className="formbold-input-wrapp formbold-mb-3">
+                                        <label htmlFor="productID" className="formbold-form-label"> ID </label>
+                                        <input
+                                        type="text"
+                                        name="productID"
+                                        defaultValue={`${item.productID}`}
+                                        id="productID"
+                                        placeholder="Product ID"
+                                        className="formbold-form-input"
+                                        {...register("productID")}
+                                        />
+                                    </div>
+                                    <div className="error-notice">
+                                    {errors.productID && (
+                                            <div id="error-file" className="layout-content-group error-form">
+                                                {errors.productID.message}
+                                            </div>
+                                        )}
+                                    </div>
                                     <div className="formbold-input-wrapp formbold-mb-3">
                                         <label htmlFor="name" className="formbold-form-label"> Name </label>
                                         <div>
@@ -214,25 +238,9 @@ const EditProduct = () => {
                                             defaultValue={item.type}
                                             {...register("type")}
                                         >
-                                            {item.type === "Laptop" ? (
-                                                <>
-                                                    <option value="Laptop">Laptop</option>
-                                                    <option value="Smartphone">Smartphone</option>
-                                                    <option value="Camera">Camera</option>
-                                                </>
-                                            ) : item.type === "Smartphone" ? (
-                                                <>
-                                                    <option value="Laptop">Laptop</option>
-                                                    <option value="Smartphone">Smartphone</option>
-                                                    <option value="Camera">Camera</option>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <option value="Laptop">Laptop</option>
-                                                    <option value="Smartphone">Smartphone</option>
-                                                    <option value="Camera">Camera</option>
-                                                </>
-                                            )}
+                                            {listType.length > 0 && listType.map((item,index) =>(
+                                                <option value={`${item}`} key={index}>{item}</option>
+                                            ))}
                                         </select>
                                     </div>
                                     <div className="error-notice">

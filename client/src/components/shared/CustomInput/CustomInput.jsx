@@ -27,6 +27,7 @@ const CustomInput = ({
   checkNumber = false,
   onChange = false,
   value,
+  onPressEnter,
 }) => {
   const [isHide, setIsHide] = useState(false);
 
@@ -50,6 +51,15 @@ const CustomInput = ({
       return children === undefined;
     }
   };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      if (onPressEnter) {
+        onPressEnter();
+      }
+    }
+  };
+
   return (
     <div
       className={`custom-input ${className ? className : ''} `}
@@ -83,6 +93,7 @@ const CustomInput = ({
           defaultValue={defaultValue}
           value={value}
           onChange={onChange}
+          onKeyDown={handleKeyDown}
         />
       ) : (
         <input
@@ -107,6 +118,7 @@ const CustomInput = ({
           {...register(id)}
           defaultValue={defaultValue}
           value={value}
+          onKeyDown={handleKeyDown}
         />
       )}
       {!check && (
