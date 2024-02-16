@@ -50,15 +50,27 @@
       .order-col{
         .product-infor{
           flex: 3;
+          align-items: center;
           .product-img{
             img{
                 width: 60px
             }
-        }
+          }
+          .product-body{
+            align-items: center;
+            display: flex;
+            text-align: start;
+            .product-name{
+              margin: 0;
+            }
+          }
         }
         .product-action{
+          display: flex;
           flex: 1;
+          align-items: center;
           .delete {
+            margin-left: 20px;
             position: absolute;
             height: 14px;
             width: 14px;

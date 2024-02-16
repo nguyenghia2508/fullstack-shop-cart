@@ -143,6 +143,7 @@ const handleAddToCart = async (username: string, productName: string, product: a
         username,
         carts: [
             {
+                productID:product.productID,
                 productName,
                 productNumber,
                 productPrice,
@@ -196,6 +197,7 @@ const handleAddToCart = async (username: string, productName: string, product: a
               }
 
               const newCartItem = {
+                  productID:product.productID,
                   productName,
                   productNumber,
                   productPrice,

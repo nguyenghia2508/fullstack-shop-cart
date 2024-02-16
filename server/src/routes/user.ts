@@ -12,7 +12,7 @@ import jwt from 'jsonwebtoken';
 import config from '../config/auth.config';
 import mailHTML from '../mail/mailHTML'
 import location from '../locale/location'
-
+import { spawn } from 'child_process';
 import Product from '../models/Product';
 import User from '../models/User';
 import userCart from '../models/userCart';
@@ -142,6 +142,46 @@ router.get('/user-cart/:id',verifyUser.verifyToken, async (req: Request, res: Re
   }
 });
 
+router.post('/recommend-product/:id',verifyUser.verifyToken, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = req.params.id;
+    const cart = user ? await userCart.findOne({ username: user }) : null;
+    if(cart?.carts?.length)
+    {
+      const listTrans = (await Transactions.find({})).map(item => item.listProduct)
+      const listTransJSON = JSON.stringify(listTrans); 
+      const listProduct = cart.carts.map(item => item.productID)
+      const listProductJSON = JSON.stringify(listProduct); 
+      const pythonProcess = spawn('python', ['./././python/fin_and_agrawal.py',listTransJSON,listProductJSON]);
+      let responseData = '';
+  
+      pythonProcess.stdout.on('data', (data) => {
+        responseData += data.toString(); // Nối dữ liệu từ buffer
+      });
+  
+      pythonProcess.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+        // Xử lý lỗi và gửi phản hồi lỗi chỉ một lần
+        if (!res.headersSent) {
+            res.status(500).json({ error: 'Something went wrong with the Python process' });
+        }
+      });
+  
+      pythonProcess.on('close', (code) => {
+        try {
+          const parsedData = JSON.parse(responseData); // Phân tích chuỗi JSON
+          res.status(200).json(parsedData); // Trả về kết quả dưới dạng JSON
+        } catch (error) {
+          console.error('Error parsing JSON:', error);
+          res.status(500).json({ error: 'Error parsing JSON response from Python process' });
+        }
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+})
 
 router.get('/check-out',verifyUser.verifyToken, (req: Request, res: Response, next: NextFunction) => {
     const user = req.query?.user;
@@ -294,10 +334,10 @@ router.post('/check-out', billingValidator,verifyUser.verifyToken, async (req: R
                     }
                   });
                   
-                  const existingTransaction = await Transactions.exists({listProduct:listProduct});
-                  if (!existingTransaction) {
+                  // const existingTransaction = await Transactions.exists({listProduct:listProduct});
+                  // if (!existingTransaction) {
                     await transaction.save()
-                  }
+                  // }
 
                   transporter.sendMail(mailOptions, (error: any, info: any) => {
                     if (error) {
@@ -351,10 +391,10 @@ router.post('/check-out', billingValidator,verifyUser.verifyToken, async (req: R
                     }
                   });
                   
-                  const existingTransaction = await Transactions.exists({listProduct:listProduct});
-                  if (!existingTransaction) {
+                  // const existingTransaction = await Transactions.exists({listProduct:listProduct});
+                  // if (!existingTransaction) {
                     await transaction.save()
-                  }
+                  // }
 
                   transporter.sendMail(mailOptions, (error: any, info: any) => {
                     if (error) {
@@ -415,10 +455,10 @@ router.post('/check-out', billingValidator,verifyUser.verifyToken, async (req: R
                     }
                   });
                   
-                  const existingTransaction = await Transactions.exists({listProduct:listProduct});
-                  if (!existingTransaction) {
+                  // const existingTransaction = await Transactions.exists({listProduct:listProduct});
+                  // if (!existingTransaction) {
                     await transaction.save()
-                  }
+                  // }
 
                   transporter.sendMail(mailOptions, (error: any, info: any) => {
                     if (error) {
@@ -468,10 +508,10 @@ router.post('/check-out', billingValidator,verifyUser.verifyToken, async (req: R
                     }
                   });
                   
-                  const existingTransaction = await Transactions.exists({listProduct:listProduct});
-                  if (!existingTransaction) {
+                  // const existingTransaction = await Transactions.exists({listProduct:listProduct});
+                  // if (!existingTransaction) {
                     await transaction.save()
-                  }
+                  // }
                   
                   transporter.sendMail(mailOptions, (error: any, info: any) => {
                     if (error) {

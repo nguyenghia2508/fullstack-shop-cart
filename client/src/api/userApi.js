@@ -6,6 +6,7 @@ const userApi = {
     ,productNumber: data.productNumber})),
   deleteProduct: (data) => axiosClient.post(`api/delete/${data.userInfor}`,(data.actionSubmit)),
   getUserCart: (id) => axiosClient.get(`api/user/user-cart/${id}`),
+  recommendProduct: ({id}) => axiosClient.post(`api/user/recommend-product/${id}`),
 }
 
 export default userApi

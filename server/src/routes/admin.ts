@@ -33,7 +33,6 @@ const checkFileType = (req: Request, file: Express.Multer.File, cb: FileFilterCa
     cb(null, true);
   } else {
     const fileTypeInvalid = 'Invalid format, only JPG and PNG';
-    req.fileTypeInvalid = fileTypeInvalid;
     cb(new Error(fileTypeInvalid))
   }
 };
@@ -273,14 +272,8 @@ router.post('/add-product', uploader.fields([{ name: 'myImage' }]), addValidator
           console.log(err);
         });
       }
-    } else if (req.fileTypeInvalid) {
-      message = req.fileTypeInvalid;
-      return res.status(401).json({
-        param: 'admin',
-        state: 'false',
-        msg: message
-      })
-    } else {
+    } 
+    else {
       const errors = result.array();
       message = errors[0].msg;
       return res.status(401).json({
@@ -289,6 +282,17 @@ router.post('/add-product', uploader.fields([{ name: 'myImage' }]), addValidator
         msg: message
       })
     }
+},
+function (err:Error, req: Request, res: Response, next: NextFunction) {
+  // handle your error here
+  if (err) {
+    // A Multer error occurred when uploading
+    return res.status(400).json({
+      param: 'admin',
+      state: 'false',
+      msg: err.message
+    });
+  }
 });
   
 router.get('/detail-product/:id', (req: Request, res: Response, next: NextFunction) => {
@@ -566,7 +570,18 @@ router.post('/edit-product/:id', uploader.fields([{ name: 'myImageEdit' }]), upd
       msg: message
     })
   }
-});
+},
+function (err:Error, req: Request, res: Response, next: NextFunction) {
+  // handle your error here
+  if (err) {
+    // A Multer error occurred when uploading
+    return res.status(400).json({
+      param: 'admin',
+      state: 'false',
+      msg: err.message
+    });
+  }
+})
 
 router.get('/add-type', (req: Request, res: Response, next: NextFunction) => {
 

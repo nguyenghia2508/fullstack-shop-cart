@@ -15,6 +15,7 @@ import {setCheckoutStatus} from "../../redux/features/checkoutSlide"
 import { toast } from "react-toastify";
 
 import './checkout.scss'
+import { resetUserCart } from "../../redux/features/useCartSlice";
 
 const Checkout = () => {
 
@@ -76,7 +77,18 @@ const Checkout = () => {
             }
         }
         getUserCart();
-    }, []);
+    }, [])
+
+    useEffect(() => {
+        if(userCart.infoProduct.length === 0)
+        {
+            dispatch(resetUserCart())
+            setInfoProduct(userCart.infoProduct)
+            setTotalNumber(userCart.totalNumber)
+            setTotalPrice(userCart.totalPrice)
+        }
+    }, [userCart]);
+
 
     const onSubmit = async (data) => {
         try {

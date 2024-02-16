@@ -5,11 +5,12 @@ import { GiShoppingCart } from "react-icons/gi";
 import Loading from "../../components/common/Loading";
 import MainLayout from "../../components/layout/main/MainLayout"
 import addDos from "../../functions/addDos"
-import billApi from "../../api/billApi";
+import userApi from "../../api/userApi";
 import ProductLink from "../../components/common/ProductLink";
 import DeleteCartButton from "../../components/common/DeleteCartButton";
 import { toast } from "react-toastify";
 import './cart.scss'
+import { resetUserCart } from "../../redux/features/useCartSlice";
 
 
 const CartView = () => {
@@ -33,14 +34,17 @@ const CartView = () => {
                     setInfoProduct(userCart.infoProduct)
                     setTotalNumber(userCart.totalNumber)
                     setTotalPrice(userCart.totalPrice)
+                    if(userCart.infoProduct.length > 0)
+                    {
+                        const res = await userApi.recommendProduct({id:user.username})
+                    }
                 }
                 else {
                     navigate('/');
                 }
             } 
             catch (err) {
-                const errors = err.data.msg
-                toast.error(errors, {
+                toast.error(err, {
                     position: 'top-left',
                     autoClose: 3000,
                     style: { color: '$color-default', backgroundColor: '#fff' },
@@ -49,6 +53,16 @@ const CartView = () => {
         }
         getUserCart();
     }, []);
+
+    useEffect(() => {
+        if(userCart.infoProduct.length === 0)
+        {
+            dispatch(resetUserCart())
+            setInfoProduct(userCart.infoProduct)
+            setTotalNumber(userCart.totalNumber)
+            setTotalPrice(userCart.totalPrice)
+        }
+    }, [userCart]);
 
     return (
         <MainLayout
