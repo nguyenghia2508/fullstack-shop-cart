@@ -128,7 +128,7 @@ const Store = () => {
     useEffect(() => {
         const handleFilter = async () =>{
             try {
-                const data = await productApi.filterListProduct({listType,minPrice,maxPrice,sortBy,perPage,page})
+                const data = await productApi.filterListProduct({listType,minPrice,maxPrice,sortBy,perPage,page:1})
                 setinfoProduct(data.listProduct)
                 setPageTotal(data.pageTotal)
                 setPrevPage(data.prevPage)
