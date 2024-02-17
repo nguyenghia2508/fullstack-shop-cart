@@ -12,55 +12,54 @@ import separateDecimal from '../function/separateDecimal';
 
 const router = Router();
 
+async function getListProduct(categoryArray: Object[],category: string)
+{
+  const products = await Product.find({category:category}).sort({ date: -1, index: -1 });
+  if (products) {
+    for (const product of products) {
+      if (categoryArray.length < 5) {
+        const rt = await Rating.findOne({ productName: { $regex: `^${product.name}$`, $options: 'i' } }, { listReview: 1 });
+        const totalRating = calculateRatingCounts(rt?.listReview ?? []).reverse();             
+        const convertedTotalRating: { rating: string; count: number }[] = totalRating.map(item => ({
+          rating: item.rating.toString(),
+          count: item.count,
+        }));
+        const averageRating: string = (calculateAverageRating(convertedTotalRating).toFixed(1));
+        const [integerPart, decimalPart] = separateDecimal(parseFloat(averageRating));
+        categoryArray.push({
+            id: product._id,
+            name: product.name,
+            price: product.price,
+            date: product.date,
+            category: product.category,
+            desc: product.desc,
+            detail: product.detail,
+            image: {
+                path: product.image.path,
+                name: product.image.name,
+                imageType: product.image.imageType
+            },
+            totalSold: product.totalSold,
+            count: rt ? rt.listReview.length : [],
+            averageRating,
+            integerPart,
+            decimalPart,
+        });
+      }
+    }
+  }
+}
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   const newLap: Object[] = [];
   const newPhone: Object[] = [];
   const newCam: Object[] = [];
   try {
-      const products = await Product.find({}).sort({ date: -1, index: -1 });
-
-      if (products) {
-          for (const product of products) {
-              const rt = await Rating.findOne({ productName: { $regex: `^${product.name}$`, $options: 'i' } }, { listReview: 1 });
-              const totalRating = calculateRatingCounts(rt?.listReview ?? []).reverse();             
-              const convertedTotalRating: { rating: string; count: number }[] = totalRating.map(item => ({
-                rating: item.rating.toString(),
-                count: item.count,
-              }));
-              const averageRating: string = (calculateAverageRating(convertedTotalRating).toFixed(1));
-              const [integerPart, decimalPart] = separateDecimal(parseFloat(averageRating));
-
-              const pushToCategory = (categoryArray: Object[], category: string) => {
-                  if (categoryArray.length < 5 && product.category === category) {
-                      categoryArray.push({
-                          id: product._id,
-                          name: product.name,
-                          price: product.price,
-                          date: product.date,
-                          category: product.category,
-                          desc: product.desc,
-                          detail: product.detail,
-                          image: {
-                              path: product.image.path,
-                              name: product.image.name,
-                              imageType: product.image.imageType
-                          },
-                          totalSold: product.totalSold,
-                          count: rt ? rt.listReview.length : [],
-                          averageRating,
-                          integerPart,
-                          decimalPart,
-                      });
-                  }
-              };
-
-              pushToCategory(newLap, 'Laptop');
-              pushToCategory(newPhone, 'Smartphone');
-              pushToCategory(newCam, 'Camera');
-          }
-
-          return res.status(200).json({ newLap, newPhone, newCam });
-      }
+      await Promise.all([
+          getListProduct(newLap, 'Laptop'),
+          getListProduct(newPhone, 'Smartphone'),
+          getListProduct(newCam, 'Camera')
+      ]);
+      return res.status(200).json({ newLap, newPhone, newCam });
   } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');
