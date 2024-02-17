@@ -11,6 +11,7 @@ import ProductLink from "../../components/common/ProductLink"
 import productApi from "../../api/productApi"
 import Pagination from "../../components/common/Pagination"
 import ProductRating from "../../components/common/ProductRating"
+import Loading from "../../components/common/Loading"
 
 const Store = () => {
     const navigate = useNavigate();
@@ -33,6 +34,7 @@ const Store = () => {
     const [minPrice, setMinPrice] = useState(MIN_PRICE);
     const [maxPrice, setMaxPrice] = useState(MIN_PRICE);
     const [listType, setSelectedTypes] = useState([]);
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const getListProduct= async () => {
@@ -45,6 +47,7 @@ const Store = () => {
                 setTotalPages(data.totalPages)
                 setNextPage(data.nextPage)
                 setCurrentPage(data.currentpage)
+                setLoading(false)
             } catch (err) {
                 console.log(err)
             }
@@ -125,7 +128,7 @@ const Store = () => {
     useEffect(() => {
         const handleFilter = async () =>{
             try {
-                const data = await productApi.filterListProduct({listType,minPrice,maxPrice,sortBy,perPage})
+                const data = await productApi.filterListProduct({listType,minPrice,maxPrice,sortBy,perPage,page})
                 setinfoProduct(data.listProduct)
                 setPageTotal(data.pageTotal)
                 setPrevPage(data.prevPage)
@@ -258,7 +261,8 @@ const Store = () => {
                                 </ul>
                             </div>
                             <div className="row" id="row-list-product">
-                                {infoProduct && infoProduct.length !== 0 && infoProduct.map((item,index) => (
+                                {loading ? <Loading/> :
+                                    infoProduct && infoProduct.length !== 0 && infoProduct.map((item,index) => (
                                     <div className="col-md-4 col-xs-6" key={index}>
                                         <div className="product">
                                             <div id="newItem" className="product-img">
