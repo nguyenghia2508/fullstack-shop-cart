@@ -4,6 +4,7 @@ import { Button,Modal } from "antd";
 import { DownloadOutlined } from "@mui/icons-material";
 import adminApi from "../../../api/admin/adminApi";
 import Loading from "../../common/Loading";
+import "./styles.scss"
 
 const ModalExport = () => {
   
