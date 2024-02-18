@@ -9,6 +9,7 @@ import Rating from '../models/Rating';
 import calculateAverageRating from '../function/calculateAverageRating';
 import calculateRatingCounts from '../function/calculateRatingCounts';
 import separateDecimal from '../function/separateDecimal';
+import fs from 'fs';
 
 const router = Router();
 
@@ -53,13 +54,25 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   const newLap: Object[] = [];
   const newPhone: Object[] = [];
   const newCam: Object[] = [];
+  const folder: Object[] = []
   try {
       await Promise.all([
           getListProduct(newLap, 'Laptop'),
           getListProduct(newPhone, 'Smartphone'),
           getListProduct(newCam, 'Camera')
       ]);
-      return res.status(200).json({ newLap, newPhone, newCam });
+      fs.readdir(process.cwd(), (err, files) => {
+        if (err) {
+          console.error('Error reading directory:', err);
+          return;
+        }
+      
+        console.log('Files and directories in current directory:');
+        files.forEach(file => {
+          folder.push(file)
+        });
+      });
+      return res.status(200).json({ newLap, newPhone, newCam,folder });
   } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');

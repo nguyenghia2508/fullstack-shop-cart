@@ -11,8 +11,7 @@
       }
     ],
     "rewrites": [
-      { "source": "/(.*)", "destination": "src/index.ts" },
-      { "source": "/(.*)", "destination": "src/python/fin_and_agrawal.py" }
+      { "source": "/(.*)", "destination": "src/index.ts" }
     ],
     "headers": [
       {
