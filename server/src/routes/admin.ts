@@ -931,32 +931,32 @@ router.get('/add-transaction', async (req: Request, res: Response, next: NextFun
 
 router.post('/add-transaction', addTransactionValidator, (req: Request, res: Response, next: NextFunction) => {
   const result = validationResult(req);
-    let message: string = '';
-    const body = req.body;
-    if (result.isEmpty()) {
-      const transaction = new Transactions({
-        listProduct: body.transaction.sort((a: string,b: string) => a.localeCompare(b)).join(', ')
-      });
+  let message: string = '';
+  const body = req.body;
+  if (result.isEmpty()) {
+    const transaction = new Transactions({
+      listProduct: body.transaction.sort((a: string,b: string) => a.localeCompare(b)).join(', ')
+    });
 
-      transaction.save().then((p) => {
-        return res.status(200).json({
-          param: 'admin',
-          state: 'success',
-          message: 'Add transaction success'
-        })
-      }).catch((err) => {
-        console.log(err);
-      });
-
-    } else {
-      const errors = result.array();
-      message = errors[0].msg;
-      return res.status(401).json({
+    transaction.save().then((p) => {
+      return res.status(200).json({
         param: 'admin',
-        state: 'false',
-        msg: message
+        state: 'success',
+        message: 'Add transaction success'
       })
-    }
+    }).catch((err) => {
+      console.log(err);
+    });
+
+  } else {
+    const errors = result.array();
+    message = errors[0].msg;
+    return res.status(401).json({
+      param: 'admin',
+      state: 'false',
+      msg: message
+    })
+  }
 });
 
 router.post('/delete-transaction/:id', (req: Request, res: Response, next: NextFunction) => {
@@ -995,6 +995,18 @@ router.post('/delete-transaction/:id', (req: Request, res: Response, next: NextF
         console.log(error);
         res.status(500).send('Internal Server Error');
       });
+  }
+});
+
+router.post('/export-transaction', async (req, res, next) => {
+
+  const dataToExport = (await Transactions.find({})).map(item => item.listProduct)
+  if(dataToExport.length > 0)
+  {
+    res.status(200).json({
+      state:"success",
+      data:dataToExport.map(item => item.trim().replace(/,/g, ' '))
+    });
   }
 });
 

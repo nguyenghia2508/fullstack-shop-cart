@@ -163,19 +163,31 @@ router.post('/recommend-product/:id',verifyUser.verifyToken, async (req: Request
         console.error(`stderr: ${data}`);
         // Xử lý lỗi và gửi phản hồi lỗi chỉ một lần
         if (!res.headersSent) {
-            res.status(500).json({ error: 'Something went wrong with the Python process' });
+            res.status(500).json({ 
+              param: 'recommend',
+              msg: 'Something went wrong with the Python process' 
+            });
         }
       });
   
-      pythonProcess.on('close', (code) => {
+      pythonProcess.on('close', async (code) => {
         try {
           const parsedData = JSON.parse(responseData); // Phân tích chuỗi JSON
-          res.status(200).json(parsedData); // Trả về kết quả dưới dạng JSON
+          if (parsedData.length > 0) {
+            const consequentProduct = parsedData[0][parsedData[0].indexOf('==>') + 1];
+            const recommendProduct = await Product.findOne({productID:consequentProduct})
+            res.status(200).json({ data: recommendProduct }); // Trả về kết quả dưới dạng JSON
+          } else {
+            res.status(200).json({ data: [] }); // Trả về một mảng rỗng nếu không có dữ liệu được phân tích
+          }
         } catch (error) {
           console.error('Error parsing JSON:', error);
-          res.status(500).json({ error: 'Error parsing JSON response from Python process' });
+          res.status(500).json({
+            param: 'recommend',
+            msg: 'Error parsing JSON response from Python process'
+          });
         }
-      });
+      });      
     }
   } catch (error) {
     console.error(error);

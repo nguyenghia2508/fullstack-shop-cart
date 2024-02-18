@@ -11,7 +11,9 @@ import DeleteCartButton from "../../components/common/DeleteCartButton";
 import { toast } from "react-toastify";
 import './cart.scss'
 import { resetUserCart } from "../../redux/features/useCartSlice";
-
+import AddCartButton from "../../components/common/AddCartButton";
+import useAddCartProduct from "../../functions/addCartProduct";
+import useDeleteCartProduct from "../../functions/deleteCartProduct";
 
 const CartView = () => {
 
@@ -21,11 +23,16 @@ const CartView = () => {
     const user = useSelector((state) => state.user.value)
     const userCart = useSelector((state) => state.userCart.value)
     
+    const { addCartProduct } = useAddCartProduct();
+    const { deleteCartProduct } = useDeleteCartProduct()
+
     const [loading, setLoading] = useState(false)
     const [infoProduct, setInfoProduct] = useState([]);
     const [totalNumber, setTotalNumber] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
-    
+    const [recommendP, setRecommendP] = useState([])
+    const [hide , setHide] = useState(false)
+
     useEffect(() => {
         const getUserCart = async () => {
             try {
@@ -34,10 +41,6 @@ const CartView = () => {
                     setInfoProduct(userCart.infoProduct)
                     setTotalNumber(userCart.totalNumber)
                     setTotalPrice(userCart.totalPrice)
-                    if(userCart.infoProduct.length > 0)
-                    {
-                        const res = await userApi.recommendProduct({id:user.username})
-                    }
                 }
                 else {
                     navigate('/');
@@ -52,7 +55,7 @@ const CartView = () => {
             }
         }
         getUserCart();
-    }, []);
+    }, [userCart]);
 
     useEffect(() => {
         if(userCart.infoProduct.length === 0)
@@ -64,6 +67,44 @@ const CartView = () => {
         }
     }, [userCart]);
 
+    useEffect(() => {
+        const getRecommendProduct = async () =>{
+            if(userCart.infoProduct.length > 0)
+            {
+                const res = await userApi.recommendProduct({id:user.username})
+                try {
+                    setRecommendP(res.data)
+                } 
+                catch (err) {
+                    const errors = err.data.msg
+                    toast.error(errors, {
+                        position: 'top-left',
+                        autoClose: 3000,
+                        style: { color: '$color-default', backgroundColor: '#fff' },
+                    });
+                }
+            }
+        }
+        getRecommendProduct()
+    }, []);
+
+    const handleAdd = async ({recommendP,e}) => {
+        e.preventDefault()
+        setHide(true)
+        const userInfor = user.username
+        await addCartProduct({ userInfor, item:recommendP });
+    }
+
+    const handleHide = () => {
+        setHide(true)      
+    }
+
+    const handleDelete = async ({item,e}) => {
+        e.preventDefault()
+        const userInfor = user.username
+        await deleteCartProduct({ userInfor, item });
+    }
+      
     return (
         <MainLayout
             add={
@@ -97,16 +138,55 @@ const CartView = () => {
                                                                 </h3>
                                                             </div>
                                                         </div>
-                                                        <div>x{item.productNumber}</div>
-                                                        <div id="price-checkout">{addDos(item.productPrice)}</div>
+                                                        <div id="number-product">x{item.productNumber}</div>
+                                                        <div id="price-product">{addDos(item.productPrice)}</div>
                                                     </div>
                                                     <div className="product-action">
                                                         <DeleteCartButton 
-                                                        // onclick={(e) => handleDelete({ item, e })}
+                                                            onclick={(e) => handleDelete({ item, e })}
                                                         />
                                                     </div>
                                                 </div>
                                             ))}
+                                            {!hide && recommendP.length !== 0 ?
+                                                <>
+                                                    <span className="recommend-text">You may also like:</span>
+                                                    <div className="order-col">
+                                                        <div className="product-infor">
+                                                            <div className="product-widget" id="recommend" >
+                                                                <div className="product-img">
+                                                                    <img src={`${recommendP.image.path}`} alt="" />
+                                                                </div>
+                                                                <div className="product-body">
+                                                                    <h3 id="product-name-dropdown" className="product-name">
+                                                                        <ProductLink item={recommendP}/>
+                                                                    </h3>
+                                                                </div>
+                                                            </div>
+                                                            <div id="number-product"></div>
+                                                            <div id="price-product">{addDos(recommendP.price)}</div>
+                                                        </div>
+                                                        <div className="product-action">
+                                                            <div className="add-product">
+                                                                <Link to={'/'}
+                                                                    onClick={(e) => handleAdd({ recommendP, e })}
+                                                                >
+                                                                    Add now !
+                                                                </Link>
+                                                            </div>
+                                                            <span>Or</span>
+                                                            <div className="hide-product">
+                                                                <Link 
+                                                                    onClick={(e) => handleHide()}
+                                                                >
+                                                                    Remind me later
+                                                                </Link>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            : null
+                                            }
                                         </div>
                                     </div>
                                 </div>

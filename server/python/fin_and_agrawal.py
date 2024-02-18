@@ -625,7 +625,7 @@ class FIN:
             if line.strip() == '' or line[0] == '#' or line[0] == '%' or line[0] == '@':
                 continue
             # split the line into items
-            lineSplited = line.split(',')
+            lineSplited = [item.strip() for item in line.split(',')]
 
             # for each item in the transaction
             tLen = 0 # tLen
@@ -803,7 +803,7 @@ class FIN:
             self.numOfTrans += 1
 
             # split the line into items
-            lineSplited = line.split(',')
+            lineSplited = [item.strip() for item in line.split(',')]
 
             # for each item in the transaction
             for itemString in lineSplited:
@@ -1101,7 +1101,7 @@ class AssocRules:
     def getListRules(self, databaseSize):
         addRules = []
         for i, rule in enumerate(self.rules):
-            addRules.append([rule.toString().split(" "),rule.getRelativeSupport(databaseSize),rule.getAbsoluteSupport()/databaseSize,rule.getConfidence()])
+            addRules.append([list(filter(lambda x: x != '', rule.toString().split(" "))),rule.getRelativeSupport(databaseSize),rule.getConfidence()])
         return addRules
     
     def printRulesWithLift(self, databaseSize):
@@ -1350,4 +1350,6 @@ if len(filtered_rules_list):
     max_confidence_rule_with_item = max(filtered_rules_list, key=lambda x: x[2])
     json_result = json.dumps(max_confidence_rule_with_item)
     print(json_result)
+else:
+    print(json.dumps([]))
 

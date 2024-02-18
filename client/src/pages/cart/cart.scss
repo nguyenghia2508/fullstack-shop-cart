@@ -41,12 +41,18 @@
   
   .product-infor {
       display: flex;
-      div{
+      .product-widget,#price-product,#number-product{
         width: 100%;
       }
   }
   
   .order-products{
+      .recommend-text{
+        display: flex;
+        font-size: 17px;
+        font-weight: 100;
+        justify-content: center;
+      }
       .order-col{
         .product-infor{
           flex: 3;
@@ -64,11 +70,15 @@
               margin: 0;
             }
           }
+          
         }
         .product-action{
           display: flex;
           flex: 1;
           align-items: center;
+          span{
+            margin:0 10px 0 10px;
+          }
           .delete {
             margin-left: 20px;
             position: absolute;

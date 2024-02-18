@@ -7,6 +7,8 @@ import FormattedDateTime from '../../../functions/FormattedDateTime'
 import PaginationAdmin from '../../../components/admin/PaginationAdmin'
 import Loading from "../../../components/common/Loading";
 import { toast } from "react-toastify";
+import ModalExport from "../../../components/admin/transaction/ModalExport";
+
 import "./styles.scss"
 
 const TransactionAdmin = () => {
@@ -85,7 +87,7 @@ const TransactionAdmin = () => {
                 style: { color: '$color-default', backgroundColor: '#fff' },
             });
         }
-    } 
+    }
 
     return (
         <AdminLayout 
@@ -106,7 +108,7 @@ const TransactionAdmin = () => {
                         <Link to="/admin/add-transaction">
                             <button type="button" className="btn btn-info add-new"><i className="fa fa-plus"></i> Add New</button>
                         </Link>
-                        <button type="button" className="btn btn-info add-new"><i className="fa fa-plus"></i> Export</button>
+                        <ModalExport/>
                     </div>
                     
                 </div>
