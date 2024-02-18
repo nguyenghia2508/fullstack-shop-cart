@@ -18,7 +18,8 @@ import User from '../models/User';
 import userCart from '../models/userCart';
 import Bill from '../models/Bill';
 import Transactions from '../models/Transactions';
-import fs from 'fs';
+import path from 'path';
+
 // import config from '../config/auth.config';
 // import jwt from 'jsonwebtoken';
 
@@ -157,20 +158,8 @@ router.post('/recommend-product/:id', verifyUser.verifyToken, async (req: Reques
       const listTransJSON = JSON.stringify(listTrans.map(item => item.listProduct));
       const listProductJSON = JSON.stringify(listProduct);
 
-      const pythonProcess = spawn('python', ['././src/python/fin_and_agrawal.py', listTransJSON, listProductJSON]);
+      const pythonProcess = spawn('python', [path.join(process.cwd(),'python/fin_and_agrawal.py'), listTransJSON, listProductJSON]);
       let responseData = '';
-      console.log("Đường dẫn của dự án trên Vercel:", process.cwd());
-      fs.readdir(process.cwd(), (err, files) => {
-        if (err) {
-          console.error('Error reading directory:', err);
-          return;
-        }
-      
-        console.log('Files and directories in current directory:');
-        files.forEach(file => {
-          console.log(file);
-        });
-      });
       const onDataReceived = (data: { toString: () => string; }) => {
           responseData += data.toString(); // Nối dữ liệu từ buffer
       };
