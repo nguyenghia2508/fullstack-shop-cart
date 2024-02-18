@@ -157,7 +157,7 @@ router.post('/recommend-product/:id', verifyUser.verifyToken, async (req: Reques
       const listTransJSON = JSON.stringify(listTrans.map(item => item.listProduct));
       const listProductJSON = JSON.stringify(listProduct);
 
-      const pythonProcess = spawn('python', ['./././python/fin_and_agrawal.py', listTransJSON, listProductJSON]);
+      const pythonProcess = spawn('python', ['././src/python/fin_and_agrawal.py', listTransJSON, listProductJSON]);
       let responseData = '';
 
       const onDataReceived = (data: { toString: () => string; }) => {
