@@ -159,7 +159,7 @@ router.post('/recommend-product/:id', verifyUser.verifyToken, async (req: Reques
 
       const pythonProcess = spawn('python', ['././src/python/fin_and_agrawal.py', listTransJSON, listProductJSON]);
       let responseData = '';
-
+      console.log("Đường dẫn của dự án trên Vercel:", process.cwd());
       const onDataReceived = (data: { toString: () => string; }) => {
           responseData += data.toString(); // Nối dữ liệu từ buffer
       };
