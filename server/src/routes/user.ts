@@ -158,7 +158,7 @@ router.post('/recommend-product/:id', verifyUser.verifyToken, async (req: Reques
       const listTransJSON = JSON.stringify(listTrans.map(item => item.listProduct));
       const listProductJSON = JSON.stringify(listProduct);
 
-      const pythonProcess = spawn('python3', [path.join(process.cwd(),'src/python/fin_and_agrawal.py'), listTransJSON, listProductJSON]);
+      const pythonProcess = spawn('python3', ['fin_and_agrawal.py', listTransJSON, listProductJSON]);
       let responseData = '';
       const onDataReceived = (data: { toString: () => string; }) => {
           responseData += data.toString(); // Nối dữ liệu từ buffer
