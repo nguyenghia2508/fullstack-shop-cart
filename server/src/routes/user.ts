@@ -18,7 +18,7 @@ import User from '../models/User';
 import userCart from '../models/userCart';
 import Bill from '../models/Bill';
 import Transactions from '../models/Transactions';
-import { getFileDirectory } from 'function/getFileDirectory';
+import { getFileDirectory } from '../function/getFileDirectory';
 
 // import config from '../config/auth.config';
 // import jwt from 'jsonwebtoken';
