@@ -18,7 +18,7 @@ import User from '../models/User';
 import userCart from '../models/userCart';
 import Bill from '../models/Bill';
 import Transactions from '../models/Transactions';
-import path from 'path';
+import { getFileDirectory } from 'function/getFileDirectory';
 
 // import config from '../config/auth.config';
 // import jwt from 'jsonwebtoken';
@@ -158,7 +158,7 @@ router.post('/recommend-product/:id', verifyUser.verifyToken, async (req: Reques
       const listTransJSON = JSON.stringify(listTrans.map(item => item.listProduct));
       const listProductJSON = JSON.stringify(listProduct);
 
-      const pythonProcess = spawn('python', [path.join(__dirname,'python/fin_and_agrawal.py'), listTransJSON, listProductJSON]);
+      const pythonProcess = spawn('python', [await getFileDirectory(), listTransJSON, listProductJSON]);
       let responseData = '';
       const onDataReceived = (data: { toString: () => string; }) => {
           responseData += data.toString(); // Nối dữ liệu từ buffer
