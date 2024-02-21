@@ -33,7 +33,7 @@ router.get("/test-file", (req:Request,res:Response,next:NextFunction ) =>{
       const onProcessClose = async (code: any) => {
           try {
               const parsedData = JSON.parse(responseData); // Phân tích chuỗi JSON
-            return res.status(200).json({ parsedData}); // Trả về một mảng rỗng nếu không có dữ liệu được phân tích
+            return res.status(200).json({ parsedData,path:path.join(process.cwd())}); // Trả về một mảng rỗng nếu không có dữ liệu được phân tích
           } catch (error) {
               console.error('Error parsing Python response:', error);
               return res.status(500).json({
