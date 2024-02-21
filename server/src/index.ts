@@ -54,17 +54,17 @@ const reduceOp = function (args: IArguments, reducer: (a: any, b: any) => any) {
 //   'https://shop-cart-vercel-api.vercel.app/api/search/page/:page',
 // ]
 
-const corsOptions = {
-  origin: 'https://shop-cart-vercel.vercel.app',
-  credentials: true,
-};
+// const corsOptions = {
+//   origin: 'https://shop-cart-vercel.vercel.app',
+//   credentials: true,
+// };
 
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname,"public")));
 app.use(cookieParser('ShopCart'));
-app.use(cors(corsOptions));
+app.use(cors());
 app.use((req: Request, res: Response, next: NextFunction) => {
   if (req.method === 'OPTIONS') {
     res.status(200).end();
@@ -108,7 +108,7 @@ const adminRouter = require('./routes/admin');
 const storeRouter = require('./routes/store');
 const facebookRouter = require('./middleware/auth/facebook-auth');
 const searchRouter = require('./routes/search');
-
+const testRouter = require('./routes/test')
 
 app.get('/', (req: Request, res: Response) => {
 	return res.send('Welcome to my API')
@@ -120,6 +120,7 @@ app.use('/api/admin', adminRouter);
 app.use('/api/store', storeRouter);
 app.use('/api/auth/facebook', facebookRouter);
 app.use('/api/search', searchRouter);
+app.use('/api/test',testRouter);
 app.listen(5000, () => {
   console.log(`Listening at http://localhost:5000`);
 });

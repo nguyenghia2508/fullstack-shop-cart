@@ -1323,14 +1323,14 @@ maxAntecedentLength = 100
 data = json.loads(sys.argv[1])
 # STEP 1: Applying the FP-GROWTH algorithm to find frequent itemsets
 fin = FIN()
-fin.runAlgorithm(data, 0.5, None)
+fin.runAlgorithm(data, 0.05, None)
 patterns = fin.getFrequentItemsets()
 databaseSize = fin.numOfTrans
 # patterns.printItemsets(databaseSize)
 # fin.printStats()
 
 # STEP 2: Generating all rules from the set of frequent itemsets (based on Agrawal & Srikant, 94)
-minconf = 0.6
+minconf = 0.5
 algoAgrawal = AlgoAgrawalFaster94()
 algoAgrawal.setMaxConsequentLength(maxConsequentLength)
 algoAgrawal.setMaxAntecedentLength(maxAntecedentLength)

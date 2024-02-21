@@ -71,7 +71,7 @@ const ModalExport = () => {
         >
         <button type="button" className="btn btn-info add-new"><i className="fa fa-plus"></i> Export</button>
         </Link>
-        <Modal title="Basic Modal" open={isModalOpen} footer={modalFooter} onCancel={handleCancel}>
+        <Modal title="Transaction" open={isModalOpen} footer={modalFooter} onCancel={handleCancel}>
             {loading ? 
             <Loading/> 
             : 

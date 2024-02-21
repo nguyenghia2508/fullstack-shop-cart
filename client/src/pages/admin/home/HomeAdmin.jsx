@@ -1,5 +1,18 @@
 import AdminLayout from "../../../components/layout/admin/AdminLayout";
+import adminApi from "../../../api/admin/adminApi";
+import { useEffect } from "react";
 const HomeAdmin = () => {
+    useEffect(() => {
+        const getTestFile= async () => {
+            try {
+                const data = await adminApi.testFile()
+                console.log(data)
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        getTestFile();
+    }, []);
 
     return (
         <AdminLayout add={

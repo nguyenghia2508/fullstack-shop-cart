@@ -39,6 +39,8 @@ const adminApi = {
   deleteTransaction: (id) => axiosClient.post(`api/admin/delete-transaction/${id}`),
 
   exportTransaction: ()  => axiosClient.post(`api/admin/export-transaction`),
+
+  testFile: () => axiosClient.get(`api/test/test-file`)
 }
 
 export default adminApi
