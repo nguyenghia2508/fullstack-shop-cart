@@ -24,7 +24,7 @@ dotenv.config();
 const router = Router();
 
 router.get("/test-file", (req:Request,res:Response,next:NextFunction ) =>{
-    const pythonProcess = spawn('python', [path.join(process.cwd(), "src/a.py")]);
+    const pythonProcess = spawn('python', ["/var/task/src/a.py"]);
     let responseData = '';
       const onDataReceived = (data: { toString: () => string; }) => {
           responseData += data.toString(); // Nối dữ liệu từ buffer
