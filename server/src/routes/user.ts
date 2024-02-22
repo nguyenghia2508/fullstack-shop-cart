@@ -143,69 +143,69 @@ router.get('/user-cart/:id',verifyUser.verifyToken, async (req: Request, res: Re
   }
 });
 
-router.post('/recommend-product/:id', verifyUser.verifyToken, async (req: Request, res: Response, next: NextFunction) => {
-  try {
-      const user = req.params.id;
-      const cart = user ? await userCart.findOne({ username: user }) : null;
+// router.post('/recommend-product/:id', verifyUser.verifyToken, async (req: Request, res: Response, next: NextFunction) => {
+//   try {
+//       const user = req.params.id;
+//       const cart = user ? await userCart.findOne({ username: user }) : null;
       
-      if (!cart || !cart.carts || cart.carts.length === 0) {
-          return res.status(200).json({ data: [] });
-      }
+//       if (!cart || !cart.carts || cart.carts.length === 0) {
+//           return res.status(200).json({ data: [] });
+//       }
       
-      const listTrans = await Transactions.find({}, 'listProduct');
-      const listProduct = cart.carts.map(item => item.productID);
+//       const listTrans = await Transactions.find({}, 'listProduct');
+//       const listProduct = cart.carts.map(item => item.productID);
 
-      const listTransJSON = JSON.stringify(listTrans.map(item => item.listProduct));
-      const listProductJSON = JSON.stringify(listProduct);
+//       const listTransJSON = JSON.stringify(listTrans.map(item => item.listProduct));
+//       const listProductJSON = JSON.stringify(listProduct);
 
-      const pythonProcess = spawn('python', [await getFileDirectory(), listTransJSON, listProductJSON]);
-      let responseData = '';
-      const onDataReceived = (data: { toString: () => string; }) => {
-          responseData += data.toString(); // Nối dữ liệu từ buffer
-      };
+//       const pythonProcess = spawn('python', [await getFileDirectory(), listTransJSON, listProductJSON]);
+//       let responseData = '';
+//       const onDataReceived = (data: { toString: () => string; }) => {
+//           responseData += data.toString(); // Nối dữ liệu từ buffer
+//       };
 
-      const onProcessClose = async (code: any) => {
-          try {
-              const parsedData = JSON.parse(responseData); // Phân tích chuỗi JSON
-              if (parsedData.length > 0) {
-                  const consequentProduct = parsedData[0][parsedData[0].indexOf('==>') + 1];
-                  const recommendProduct = await Product.findOne({ productID: consequentProduct });
-                  return res.status(200).json({ data: recommendProduct }); // Trả về kết quả dưới dạng JSON
-              } else {
-                  return res.status(200).json({ data: [] }); // Trả về một mảng rỗng nếu không có dữ liệu được phân tích
-              }
-          } catch (error) {
-              console.error('Error parsing Python response:', error);
-              return res.status(500).json({
-                  param: 'recommend',
-                  msg: 'Error parsing Python response'
-              });
-          }
-      };
+//       const onProcessClose = async (code: any) => {
+//           try {
+//               const parsedData = JSON.parse(responseData); // Phân tích chuỗi JSON
+//               if (parsedData.length > 0) {
+//                   const consequentProduct = parsedData[0][parsedData[0].indexOf('==>') + 1];
+//                   const recommendProduct = await Product.findOne({ productID: consequentProduct });
+//                   return res.status(200).json({ data: recommendProduct }); // Trả về kết quả dưới dạng JSON
+//               } else {
+//                   return res.status(200).json({ data: [] }); // Trả về một mảng rỗng nếu không có dữ liệu được phân tích
+//               }
+//           } catch (error) {
+//               console.error('Error parsing Python response:', error);
+//               return res.status(500).json({
+//                   param: 'recommend',
+//                   msg: 'Error parsing Python response'
+//               });
+//           }
+//       };
 
-      const onErrorReceived = (data: any) => {
-          console.error(`stderr: ${data}`);
-          // Xử lý lỗi và gửi phản hồi lỗi chỉ một lần
-          if (!res.headersSent) {
-              res.status(500).json({
-                  param: 'recommend',
-                  msg: 'Something went wrong with the Python process'
-              });
-          }
-      };
+//       const onErrorReceived = (data: any) => {
+//           console.error(`stderr: ${data}`);
+//           // Xử lý lỗi và gửi phản hồi lỗi chỉ một lần
+//           if (!res.headersSent) {
+//               res.status(500).json({
+//                   param: 'recommend',
+//                   msg: 'Something went wrong with the Python process'
+//               });
+//           }
+//       };
 
-      pythonProcess.stdout.on('data', onDataReceived);
-      pythonProcess.on('close', onProcessClose);
-      pythonProcess.stderr.on('data', onErrorReceived);
+//       pythonProcess.stdout.on('data', onDataReceived);
+//       pythonProcess.on('close', onProcessClose);
+//       pythonProcess.stderr.on('data', onErrorReceived);
 
-  } catch (error) {
-      console.error('Error in recommendation route:', error);
-      return res.status(500).json({
-          param: 'recommend',
-          msg: 'Internal server error'
-      });
-  }
-});
+//   } catch (error) {
+//       console.error('Error in recommendation route:', error);
+//       return res.status(500).json({
+//           param: 'recommend',
+//           msg: 'Internal server error'
+//       });
+//   }
+// });
 
 router.get('/check-out',verifyUser.verifyToken, (req: Request, res: Response, next: NextFunction) => {
     const user = req.query?.user;

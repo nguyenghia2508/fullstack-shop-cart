@@ -108,7 +108,6 @@ const adminRouter = require('./routes/admin');
 const storeRouter = require('./routes/store');
 const facebookRouter = require('./middleware/auth/facebook-auth');
 const searchRouter = require('./routes/search');
-const testRouter = require('./routes/test')
 
 app.get('/', (req: Request, res: Response) => {
 	return res.send('Welcome to my API')
@@ -120,7 +119,6 @@ app.use('/api/admin', adminRouter);
 app.use('/api/store', storeRouter);
 app.use('/api/auth/facebook', facebookRouter);
 app.use('/api/search', searchRouter);
-app.use('/api/test',testRouter);
 app.listen(5000, () => {
   console.log(`Listening at http://localhost:5000`);
 });

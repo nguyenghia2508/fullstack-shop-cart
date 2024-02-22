@@ -95,7 +95,7 @@ router.post('/add/:id', async (req: Request, res: Response, next: NextFunction) 
   const productName = name, productNumber = req.body.productNumber ? req.body.productNumber : 1 , productPrice = price;
 
   const username: string = user;
-  const product = await Product.findOne({ name: productName });
+  const product = await Product.findOne({ name: productName.trim() });
 
   if (!product) {
       return res.status(200).send({ code: '6', message: 'Product not found' });
