@@ -44,6 +44,14 @@
       .product-widget,#price-product,#number-product{
         width: 100%;
       }
+      .product-widget{
+        .product-img{
+          img{
+            width: 50px;
+            height: 50px;
+          }
+        }
+      }
   }
   
   .order-products{
